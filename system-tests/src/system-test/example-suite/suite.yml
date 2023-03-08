@@ -1,0 +1,12 @@
+# begin-snippet: all
+---
+name: basic suite
+services:
+  - handle-occurrence-service
+tests:
+  - name: test 1
+    inputs:
+      - twitter.tweet.text
+    expectations:
+      - twitter.handle.usage
+# end-snippet
