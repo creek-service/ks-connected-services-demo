@@ -20,3 +20,7 @@ updates:
     open-pull-requests-limit: 50
     schedule:
       interval: monthly
+  - package-ecosystem: docker
+    directory: /handle-occurrence-filtering-service
+    schedule:
+      interval: monthly
