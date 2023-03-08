@@ -1,15 +1,15 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Coverage Status](https://coveralls.io/repos/github/creek-service/basic-kafka-streams-demo/badge.svg?branch=main)](https://coveralls.io/github/creek-service/basic-kafka-streams-demo?branch=main)
-[![build](https://github.com/creek-service/basic-kafka-streams-demo/actions/workflows/build.yml/badge.svg)](https://github.com/creek-service/basic-kafka-streams-demo/actions/workflows/build.yml)
-[![CodeQL](https://github.com/creek-service/basic-kafka-streams-demo/actions/workflows/codeql.yml/badge.svg)](https://github.com/creek-service/basic-kafka-streams-demo/actions/workflows/codeql.yml)
+[![Coverage Status](https://coveralls.io/repos/github/creek-service/ks-connected-services-demo/badge.svg?branch=main)](https://coveralls.io/github/creek-service/ks-connected-services-demo?branch=main)
+[![build](https://github.com/creek-service/ks-connected-services-demo/actions/workflows/build.yml/badge.svg)](https://github.com/creek-service/ks-connected-services-demo/actions/workflows/build.yml)
+[![CodeQL](https://github.com/creek-service/ks-connected-services-demo/actions/workflows/codeql.yml/badge.svg)](https://github.com/creek-service/ks-connected-services-demo/actions/workflows/codeql.yml)
 
 # Basic Kafka Streams Demo
 
-Repo containing the completed [Basic Kafka Streams demo](https://www.creekservice.org/basic-kafka-streams-demo)
+Repo containing the completed [Basic Kafka Streams demo](https://www.creekservice.org/ks-connected-services-demo)
 and associated [docs](docs/README.md).
 
 This repository is also a template repository to enable later tutorials, that build on this one. 
-Click the [Use this template](https://github.com/creek-service/basic-kafka-streams-demo/generate) button at the top to create a new repository from this template.
+Click the [Use this template](https://github.com/creek-service/ks-connected-services-demo/generate) button at the top to create a new repository from this template.
 
 ### Gradle commands
 

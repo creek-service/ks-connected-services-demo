@@ -40,8 +40,8 @@ dependencies {
 modularity.patchModule("kafka.streams", "kafka-streams-test-utils-$kafkaVersion.jar")
 
 application {
-    mainModule.set("basic.kafka.streams.demo.example.service")
-    mainClass.set("io.github.creek.service.basic.kafka.streams.demo.example.service.ServiceMain")
+    mainModule.set("ks.connected.services.demo.example.service")
+    mainClass.set("io.github.creek.service.ks.connected.services.demo.example.service.ServiceMain")
 }
 
 val buildAppImage = tasks.register<DockerBuildImage>("buildAppImage") {

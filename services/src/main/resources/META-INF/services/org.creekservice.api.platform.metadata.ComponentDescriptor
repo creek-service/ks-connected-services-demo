@@ -14,4 +14,4 @@
 # limitations under the License.
 #
 
-io.github.creek.service.basic.kafka.streams.demo.services.HandleOccurrenceServiceDescriptor
+io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceServiceDescriptor

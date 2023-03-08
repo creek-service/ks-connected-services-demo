@@ -1,8 +1,8 @@
-module basic.kafka.streams.demo.api {
+module ks.connected.services.demo.api {
     requires transitive creek.kafka.metadata;
 
-    exports io.github.creek.service.basic.kafka.streams.demo.api;
-    exports io.github.creek.service.basic.kafka.streams.demo.internal to
-            basic.kafka.streams.demo.services,
-            basic.kafka.streams.demo.service;
+    exports io.github.creek.service.ks.connected.services.demo.api;
+    exports io.github.creek.service.ks.connected.services.demo.internal to
+            ks.connected.services.demo.services,
+            ks.connected.services.demo.service;
 }

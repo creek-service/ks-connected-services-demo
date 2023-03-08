@@ -20,4 +20,4 @@ exec java \
  -Xms64m -Xmx256m \
  -Dlog4j.configurationFile=/log/log4j2.xml \
  --module-path "/opt/creek/service/lib" \
- --module basic.kafka.streams.demo.service/io.github.creek.service.basic.kafka.streams.demo.service.ServiceMain
+ --module ks.connected.services.demo.service/io.github.creek.service.ks.connected.services.demo.service.ServiceMain

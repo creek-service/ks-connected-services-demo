@@ -1,10 +1,10 @@
-import io.github.creek.service.basic.kafka.streams.demo.services.HandleOccurrenceServiceDescriptor;
+import io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceServiceDescriptor;
 import org.creekservice.api.platform.metadata.ComponentDescriptor;
 
-module basic.kafka.streams.demo.services {
-    requires transitive basic.kafka.streams.demo.api;
+module ks.connected.services.demo.services {
+    requires transitive ks.connected.services.demo.api;
 
-    exports io.github.creek.service.basic.kafka.streams.demo.services;
+    exports io.github.creek.service.ks.connected.services.demo.services;
 
     provides ComponentDescriptor with
             HandleOccurrenceServiceDescriptor;
