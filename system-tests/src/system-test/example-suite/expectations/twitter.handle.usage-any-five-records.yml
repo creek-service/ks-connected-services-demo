@@ -1,0 +1,11 @@
+# begin-snippet: all
+---
+!creek/kafka-topic@1
+topic: twitter.handle.usage
+records:
+  - { }
+  - { }
+  - { }
+  - { }
+  - { }
+# end-snippet

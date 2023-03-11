@@ -16,34 +16,25 @@
 
 package io.github.creek.service.ks.connected.services.demo.services;
 
-// formatting:off
-// begin-snippet: includes-1
 import static io.github.creek.service.ks.connected.services.demo.internal.TopicConfigBuilder.withPartitions;
 import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.inputTopic;
 import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.outputTopic;
-// end-snippet
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-// begin-snippet: includes-2
 import org.creekservice.api.kafka.metadata.OwnedKafkaTopicInput;
 import org.creekservice.api.kafka.metadata.OwnedKafkaTopicOutput;
-// end-snippet
 import org.creekservice.api.platform.metadata.ComponentInput;
 import org.creekservice.api.platform.metadata.ComponentInternal;
 import org.creekservice.api.platform.metadata.ComponentOutput;
 import org.creekservice.api.platform.metadata.ServiceDescriptor;
-// formatting:on
 
-// begin-snippet: class-name
 public final class HandleOccurrenceServiceDescriptor implements ServiceDescriptor {
-    // end-snippet
     private static final List<ComponentInput> INPUTS = new ArrayList<>();
     private static final List<ComponentInternal> INTERNALS = new ArrayList<>();
     private static final List<ComponentOutput> OUTPUTS = new ArrayList<>();
 
-    // formatting:off
-// begin-snippet: topic-resources
     // Define the tweet-text input topic, conceptually owned by this service:
     public static final OwnedKafkaTopicInput<Long, String> TweetTextStream =
             register(
@@ -55,13 +46,12 @@ public final class HandleOccurrenceServiceDescriptor implements ServiceDescripto
 
     // Define the output topic, again conceptually owned by this service:
     public static final OwnedKafkaTopicOutput<String, Integer> TweetHandleUsageStream =
-            register(outputTopic(
-                    "twitter.handle.usage",
-                    String.class, // (Twitter handle)
-                    Integer.class,  // (Usage count)
-                    withPartitions(6)));
-// end-snippet
-    // formatting:on
+            register(
+                    outputTopic(
+                            "twitter.handle.usage",
+                            String.class, // (Twitter handle)
+                            Integer.class, // (Usage count)
+                            withPartitions(6)));
 
     public HandleOccurrenceServiceDescriptor() {}
 

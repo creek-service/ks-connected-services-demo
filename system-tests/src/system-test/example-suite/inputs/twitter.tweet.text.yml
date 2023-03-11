@@ -1,4 +1,3 @@
-# begin-snippet: all
 ---
 !creek/kafka-topic@1
 topic: twitter.tweet.text
@@ -13,4 +12,3 @@ records:
     value: "@teslaownersSV V11 has been tougher than expected, as  it is a significant rearchitecture of NNs, plus many more NNs replacing C++. Hoping to ship v11.3 end of week."
   - key: 1621998713806721025
     value: https://t.co/gbkqVT3MXq
-# end-snippet

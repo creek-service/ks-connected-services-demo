@@ -1,0 +1,10 @@
+# begin-snippet: all
+---
+!creek/kafka-topic@1
+topic: twitter.tweet.text
+records:
+  - key: 1622262145390912597
+    value: "@POTUS. Lorem ipsum dolor sit amet. @POTUS @JoeBiden"
+  - key: 1622082025166431659
+    value: "@realDonaldTrump Vel praesentium illo non @JoeBiden ipsam veritatis vel eligendi voluptates ut maiores nihil. @BarackObama"
+# end-snippet

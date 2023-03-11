@@ -1,1 +1,9 @@
 Topologies:
+   Sub-topology: 0
+    Source: ingest-twitter.handle.usage (topics: [twitter.handle.usage])
+      --> filter-out-non-presidents
+    Processor: filter-out-non-presidents (stores: [])
+      --> egress-twitter.handle.usage.presidents
+      <-- ingest-twitter.handle.usage
+    Sink: egress-twitter.handle.usage.presidents (topic: twitter.handle.usage.presidents)
+      <-- filter-out-non-presidents
