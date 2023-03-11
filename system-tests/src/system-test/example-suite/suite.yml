@@ -1,12 +1,18 @@
-# begin-snippet: all
+# begin-snippet: first-attempt
 ---
 name: basic suite
 services:
   - handle-occurrence-service
+  - handle-occurrence-filtering-service   # 1. Include new service
 tests:
   - name: test 1
     inputs:
       - twitter.tweet.text
+      - tweets-with-presidents  # 2. Include new test input
     expectations:
       - twitter.handle.usage
+      - twitter.handle.usage.presidents # 3. Include new test expectations
+# end-snippet
+# begin-snippet: any-five
+      - twitter.handle.usage-any-five-records # 4. ignore the additional 5 records
 # end-snippet

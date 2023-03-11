@@ -1,0 +1,16 @@
+# begin-snippet: all
+---
+!creek/kafka-topic@1
+topic: twitter.handle.usage.presidents
+records:
+  - key: "@POTUS"
+    value: 2
+  - key: "@JoeBiden"
+    value: 1
+  - key: "@realDonaldTrump"
+    value: 1
+  - key: "@BarackObama"
+    value: 1
+  - key: "@JoeBiden"
+    value: 1
+# end-snippet

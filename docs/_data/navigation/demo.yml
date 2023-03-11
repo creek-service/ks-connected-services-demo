@@ -6,25 +6,17 @@
       url: /bootstrap
     - title: "Add a second microservice"
       url: /add-service
-#- title: "Write the code"
-#  children:
-#    - title: "Service descriptor"
-#      url: /descriptor
-#    - title: "Business logic"
-#      url: /business-logic
-#- title: Testing
-#  children:
-#    - title: "System tests"
-#      url: /system-testing
-#    - title: "Code coverage"
-#      url: /system-testing-coverage
-#    - title: "Unit tests"
-#      url: /unit-testing
-#    - title: "Debugging"
-#      url: /debugging
-#- title: Next steps
-#  children:
-#    - title: "Deployment"
-#      url: /deployment
-#    - title: "Further reading"
-#      url: /further-reading
+- title: "Write the code"
+  children:
+    - title: "Service descriptor"
+      url: /descriptor
+    - title: "Business logic"
+      url: /business-logic
+- title: Testing
+  children:
+    - title: "System tests"
+      url: /system-testing
+- title: Next steps
+  children:
+    - title: "Further reading"
+      url: /further-reading
