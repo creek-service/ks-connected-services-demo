@@ -2,6 +2,10 @@
 title: Kafka Streams Connected Services Demo
 permalink: /
 layout: single
+header:
+    overlay_color: "#000"
+    overlay_filter: "0.5"
+    overlay_image: /assets/images/tutorial-ks-connect-services.svg
 toc: true
 ---
 
