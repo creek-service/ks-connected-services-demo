@@ -1,5 +1,5 @@
 ---
-title: Kafka Streams Connected Services Demo
+title: Kafka Streams Connected Services Tutorial
 permalink: /
 layout: single
 header:
