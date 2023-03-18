@@ -3,9 +3,9 @@
 [![build](https://github.com/creek-service/ks-connected-services-demo/actions/workflows/build.yml/badge.svg)](https://github.com/creek-service/ks-connected-services-demo/actions/workflows/build.yml)
 [![CodeQL](https://github.com/creek-service/ks-connected-services-demo/actions/workflows/codeql.yml/badge.svg)](https://github.com/creek-service/ks-connected-services-demo/actions/workflows/codeql.yml)
 
-# Kafka Streams Connected Services Demo
+# Kafka Streams Connected Services Tutorial
 
-Repo containing the completed [Connected Services Demo](https://www.creekservice.org/ks-connected-services-demo)
+Repo containing the completed [Connected Services tutorial](https://www.creekservice.org/ks-connected-services-demo)
 and associated [docs](docs/README.md).
 
 ### Gradle commands

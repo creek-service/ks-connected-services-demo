@@ -20,6 +20,7 @@ import static io.github.creek.service.ks.connected.services.demo.internal.TopicC
 import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.inputTopic;
 import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.outputTopic;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -40,8 +41,8 @@ public final class HandleOccurrenceServiceDescriptor implements ServiceDescripto
             register(
                     inputTopic(
                             "twitter.tweet.text", // Topic name
-                            Long.class, // Topic key type (Tweet id)
-                            String.class, // Topic value type (Tweet text)
+                            Long.class, // Topic key: Tweet id
+                            String.class, // Topic value: Tweet text
                             withPartitions(5))); // Topic config
 
     // Define the output topic, again conceptually owned by this service:
@@ -49,9 +50,9 @@ public final class HandleOccurrenceServiceDescriptor implements ServiceDescripto
             register(
                     outputTopic(
                             "twitter.handle.usage",
-                            String.class, // (Twitter handle)
-                            Integer.class, // (Usage count)
-                            withPartitions(6)));
+                            String.class, // Twitter handle
+                            Integer.class, // Usage count
+                            withPartitions(6).withRetentionTime(Duration.ofHours(12))));
 
     public HandleOccurrenceServiceDescriptor() {}
 
