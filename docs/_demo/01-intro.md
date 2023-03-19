@@ -29,9 +29,9 @@ This tutorial will touch on many of Creek's features and techniques cover by pre
 However, the key features this tutorial is designed to highlight are:
   * How to declare a service that uses resources, e.g. Kafka topics, declared, and owned, by another service.
     This tutorial will declare a service that consumes the output of another service.
-    If you wish to jump straight to the step covering this, see the [Service descriptor][svcDescStep] step.
+    If you wish to jump straight to this, see the [Service descriptor][svcDescStep] step.
   * How to write black-box system tests that cover the functionality of multiple services working together.
-    If you wish to jump straight to the step covering this, see the [System test][sysTestStep] step.
+    If you wish to jump straight to this, see the [System test][sysTestStep] step.
 
 In addition to the above key features, by the end of this tutorial you should also know:
   * How to add new microservices to an aggregate repository.

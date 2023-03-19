@@ -5,9 +5,9 @@ description: Recommended reading for once you've completed this Creek tutorial.
 layout: single
 ---
 
-This tutorial has covered the basics of linking service's _within_ an aggregate together. A
-[planned tutorial <i class="fas fa-external-link-alt"></i>](https://github.com/creek-service/creek-kafka/issues/259){:target="_blank"} 
-will cover linking different aggregates.
+This tutorial has covered the basics of linking service's _within_ an aggregate together. 
+The [Kafka Streams: aggregate api tutorial](/ks-aggregate-api-demo/) covers defining an aggregate's api, 
+so that other aggregates can make use of it.
 
 If you've not already done so, completing the
 [Basic Kafka Streams Tutorial]({{ site.url | append: "/basic-kafka-streams-demo/" }})
@@ -19,7 +19,8 @@ covers useful core Creek features not covered by this tutorial. For example:
 
 Additional tutorials will be added over time. These can be found on the [tutorials page]({{ site.url | append: "/tutorials/" }}).
 
-The payloads used in this tutorial were simple types like `Integer` and `String`.  
+The payloads used in this tutorial were simple types like `Integer` and `String`.
+Obviously, this massively limits Creek's utility and is why Creek is still in alpha release.
 Work to extend this to more complex types using, schema validated, JSON serialization, will be 
 [starting soon <i class="fas fa-external-link-alt"></i>](https://github.com/creek-service/creek-kafka/issues/25){:target="_blank"}.
 {: .notice--info}
