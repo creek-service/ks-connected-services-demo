@@ -166,7 +166,7 @@ This completes the tutorial. See the next page for suggested next steps.
 
 [additionalRecHandlingIssue]: https://github.com/creek-service/creek-kafka/issues/236
 [systemTests]:https://github.com/creek-service/creek-system-test
-[kafkaOptions]: https://github.com/creek-service/creek-kafka/tree/main/test-extension#option-model-extensions
+[kafkaOptions]: https://www.creekservice.org/creek-kafka/#option-model-extensions
 [basicTutorialSysTest]: {{ site.url | append: "/basic-kafka-streams-demo/system-testing" }}
 [todo]: switch about links to proper creekservice.org links once each repo publishes docs. 
 
