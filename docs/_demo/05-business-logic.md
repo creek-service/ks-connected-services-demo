@@ -76,6 +76,6 @@ For this tutorial, the test can simple be disabled or deleted.
 
 [nameJavaDocs]: https://javadoc.io/doc/org.creekservice/creek-kafka-streams-extension/latest/creek.kafka.streams.extension/org/creekservice/api/kafka/streams/extension/util/Name.html
 [kafkaStreams]: https://kafka.apache.org/documentation/streams/
-[ksExt]: https://github.com/creek-service/creek-kafka
+[ksExt]: https://www.creekservice.org/creek-kafka
 [basicKsDemo-UnitTesting]: {{ site.url | append: "/basic-kafka-streams-demo/unit-testing" }}
 [todo]: switch about links to proper creekservice.org links once each repo publishes docs.
