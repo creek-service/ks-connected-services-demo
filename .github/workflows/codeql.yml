@@ -12,6 +12,7 @@ permissions:
 jobs:
   analyze:
     if: ${{ github.run_number != 1 }}
+    name: Analyze
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -25,22 +26,26 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.2.0
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@b2c19fb9a2a485599ccf4ed5d65527d94bc57226 # v2.3.0
+        uses: github/codeql-action/init@a4e1a019f5e24960714ff6296aee04b736cbc3cf # v3.29.6
         with:
           languages: ${{ matrix.language }}
 
       - name: Set up JDK
-        uses: actions/setup-java@5ffc13f4174014e2d4d4572b3d74c3fa61aeb2c2 # v3.11.0
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
         with:
           java-version: '17'
           distribution: 'adopt'
-          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@017a9effdb900e5b5b2fddfb590a105619dca3c3 # v4.4.2
+        with:
+          gradle-home-cache-cleanup: true
 
       - name: Build
         run: ./gradlew test
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@b2c19fb9a2a485599ccf4ed5d65527d94bc57226 # v2.3.0
+        uses: github/codeql-action/analyze@a4e1a019f5e24960714ff6296aee04b736cbc3cf # v3.29.6
