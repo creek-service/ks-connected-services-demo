@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Creek Contributors (https://github.com/creek-service)
+ * Copyright 2025 Creek Contributors (https://github.com/creek-service)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,6 +49,11 @@ val buildAppImage = tasks.register<DockerBuildImage>("buildAppImage") {
     buildArgs.put("APP_NAME", project.name)
     buildArgs.put("APP_VERSION", "${project.version}")
     images.add("ghcr.io/creek-service/${rootProject.name}-${project.name}:latest")
+
+    onlyIf {
+        // Exclude the task if running on Windows (as images don't build on Windows)
+        !System.getProperty("os.name").lowercase().contains("win")
+    }
     images.add("ghcr.io/creek-service/${rootProject.name}-${project.name}:${project.version}")
 }
 
@@ -57,7 +62,7 @@ tasks.register<Copy>("prepareDocker") {
 
     from(
         layout.projectDirectory.file("Dockerfile"),
-        layout.buildDirectory.file("distributions/${project.name}-${project.version}.tar"),
+        tarTree(layout.buildDirectory.file("distributions/${project.name}-${project.version}.tar")),
         layout.projectDirectory.dir("include"),
     )
 
