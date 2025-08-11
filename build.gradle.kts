@@ -52,7 +52,6 @@ subprojects {
     val junitVersion: String by extra
     val junitPioneerVersion: String by extra
     val mockitoVersion: String by extra
-    val hamcrestVersion : String by extra
 
     dependencies {
         testImplementation("org.creekservice:creek-test-hamcrest:$creekVersion")
@@ -61,10 +60,8 @@ subprojects {
         testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
         testImplementation("org.junit-pioneer:junit-pioneer:$junitPioneerVersion")
         testImplementation("org.mockito:mockito-junit-jupiter:$mockitoVersion")
-        testImplementation("org.hamcrest:hamcrest-core:$hamcrestVersion")
         testImplementation("com.google.guava:guava-testlib:$guavaVersion")
-        testImplementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
-        testImplementation("org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion")
+        testRuntimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     }
 

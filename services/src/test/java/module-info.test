@@ -1,8 +1,8 @@
 --add-modules
-  org.junitpioneer,org.hamcrest,guava.testlib,creek.test.util,creek.test.hamcrest
+  org.junitpioneer,org.mockito.junit.jupiter,org.hamcrest,guava.testlib,creek.test.util,creek.test.hamcrest
 
 --add-reads
-  ks.connected.services.demo.services=org.junitpioneer,org.hamcrest,guava.testlib,creek.test.util,creek.test.hamcrest
+  ks.connected.services.demo.services=org.junitpioneer,org.mockito.junit.jupiter,org.hamcrest,guava.testlib,creek.test.util,creek.test.hamcrest
 
 --add-opens
   org.junitpioneer/org.junitpioneer.jupiter=org.junit.platform.commons
