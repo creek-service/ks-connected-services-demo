@@ -233,6 +233,18 @@ public final class TopicDescriptors {
         @Override
         public KafkaTopicInput<K, V> toInput() {
             return new KafkaTopicInput<>() {
+                private final PartDescriptor<K> inputKey =
+                        new KafkaPart<>(
+                                OutputTopicDescriptor.this.key().type(),
+                                PartDescriptor.Part.key,
+                                () -> this);
+
+                private final PartDescriptor<V> inputValue =
+                        new KafkaPart<>(
+                                OutputTopicDescriptor.this.value().type(),
+                                PartDescriptor.Part.value,
+                                () -> this);
+
                 @Override
                 public URI id() {
                     return OutputTopicDescriptor.this.id();
@@ -245,12 +257,12 @@ public final class TopicDescriptors {
 
                 @Override
                 public PartDescriptor<K> key() {
-                    return OutputTopicDescriptor.this.key();
+                    return inputKey;
                 }
 
                 @Override
                 public PartDescriptor<V> value() {
-                    return OutputTopicDescriptor.this.value();
+                    return inputValue;
                 }
             };
         }
@@ -270,6 +282,18 @@ public final class TopicDescriptors {
         @Override
         public KafkaTopicOutput<K, V> toOutput() {
             return new KafkaTopicOutput<>() {
+                private final PartDescriptor<K> outputKey =
+                        new KafkaPart<>(
+                                InputTopicDescriptor.this.key().type(),
+                                PartDescriptor.Part.key,
+                                () -> this);
+
+                private final PartDescriptor<V> outputValue =
+                        new KafkaPart<>(
+                                InputTopicDescriptor.this.value().type(),
+                                PartDescriptor.Part.value,
+                                () -> this);
+
                 @Override
                 public URI id() {
                     return InputTopicDescriptor.this.id();
@@ -282,12 +306,12 @@ public final class TopicDescriptors {
 
                 @Override
                 public PartDescriptor<K> key() {
-                    return InputTopicDescriptor.this.key();
+                    return outputKey;
                 }
 
                 @Override
                 public PartDescriptor<V> value() {
-                    return InputTopicDescriptor.this.value();
+                    return outputValue;
                 }
             };
         }
