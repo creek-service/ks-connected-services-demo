@@ -22,12 +22,12 @@ repositories {
     mavenLocal()
     mavenCentral()
     gradlePluginPortal()
-    // Todo: Remove once next release available
+    // TODO: remove once next release available
     maven {
-        url = uri("https://maven.pkg.github.com/creek-service/*")
-        credentials {
-            username = "x-access-token"
-            password = System.getenv("GITHUB_TOKEN") ?: ""
+        url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+        mavenContent {
+            includeGroup("org.creekservice")
+            snapshotsOnly()
         }
     }
 }

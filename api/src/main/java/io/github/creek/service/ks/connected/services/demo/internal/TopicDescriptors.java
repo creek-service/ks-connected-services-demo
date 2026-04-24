@@ -19,7 +19,6 @@ package io.github.creek.service.ks.connected.services.demo.internal;
 import static java.util.Objects.requireNonNull;
 import static org.creekservice.api.kafka.metadata.SerializationFormat.serializationFormat;
 
-import java.net.URI;
 import java.util.Optional;
 import org.creekservice.api.kafka.metadata.SerializationFormat;
 import org.creekservice.api.kafka.metadata.topic.CreatableKafkaTopicInternal;
@@ -36,8 +35,9 @@ import org.creekservice.api.kafka.metadata.topic.OwnedKafkaTopicOutput;
 /**
  * Helper for creating topic descriptors.
  *
- * <p>Wondering where the builds are for {@link org.creekservice.api.kafka.metadata.topic.KafkaTopicInput}
- * or {@link org.creekservice.api.kafka.metadata.topic.KafkaTopicOutput}? These should only be created by
+ * <p>Wondering where the builds are for {@link
+ * org.creekservice.api.kafka.metadata.topic.KafkaTopicInput} or {@link
+ * org.creekservice.api.kafka.metadata.topic.KafkaTopicOutput}? These should only be created by
  * calling {@link OwnedKafkaTopicInput#toOutput()} and {@link OwnedKafkaTopicOutput#toInput()} on an
  * owned topic descriptor, respectively.
  */
@@ -52,8 +52,9 @@ public final class TopicDescriptors {
      * Create an input Kafka topic descriptor.
      *
      * <p>Looking for a version that returns {@link
-     * org.creekservice.api.kafka.metadata.topic.KafkaTopicInput}? Get one of those by calling {@link
-     * OwnedKafkaTopicOutput#toInput()} on the topic descriptor defined in the upstream component.
+     * org.creekservice.api.kafka.metadata.topic.KafkaTopicInput}? Get one of those by calling
+     * {@link OwnedKafkaTopicOutput#toInput()} on the topic descriptor defined in the upstream
+     * component.
      *
      * @param topicName the name of the topic
      * @param keyType the type serialized into the Kafka record key.
@@ -119,8 +120,9 @@ public final class TopicDescriptors {
      * Create an output Kafka topic descriptor.
      *
      * <p>Looking for a version that returns {@link
-     * org.creekservice.api.kafka.metadata.topic.KafkaTopicOutput}? Get one of those by calling {@link
-     * OwnedKafkaTopicInput#toOutput()} on the topic descriptor defined in the downstream component.
+     * org.creekservice.api.kafka.metadata.topic.KafkaTopicOutput}? Get one of those by calling
+     * {@link OwnedKafkaTopicInput#toOutput()} on the topic descriptor defined in the downstream
+     * component.
      *
      * @param topicName the name of the topic
      * @param keyType the type serialized into the Kafka record key.
@@ -174,7 +176,6 @@ public final class TopicDescriptors {
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private abstract static class TopicDescriptor<K, V> implements KafkaTopicDescriptor<K, V> {
 
-        private final URI id;
         private final String topicName;
         private final PartDescriptor<K> key;
         private final PartDescriptor<V> value;
@@ -189,11 +190,6 @@ public final class TopicDescriptors {
             this.key = new KafkaPart<>(Part.key, keyType, this);
             this.value = new KafkaPart<>(Part.value, valueType, this);
             this.config = requireNonNull(config, "config").map(TopicConfigBuilder::build);
-            this.id = KafkaTopicDescriptor.super.id();
-        }
-
-        public URI id() {
-            return id;
         }
 
         public String name() {
@@ -213,6 +209,62 @@ public final class TopicDescriptors {
         }
     }
 
+    private static final class KafkaTopicInputView<K, V> implements KafkaTopicInput<K, V> {
+
+        private final String name;
+        private final PartDescriptor<K> key;
+        private final PartDescriptor<V> value;
+
+        KafkaTopicInputView(final TopicDescriptor<K, V> source) {
+            this.name = source.name();
+            this.key = new KafkaPart<>(Part.key, source.key().type(), this);
+            this.value = new KafkaPart<>(Part.value, source.value().type(), this);
+        }
+
+        @Override
+        public String name() {
+            return name;
+        }
+
+        @Override
+        public PartDescriptor<K> key() {
+            return key;
+        }
+
+        @Override
+        public PartDescriptor<V> value() {
+            return value;
+        }
+    }
+
+    private static final class KafkaTopicOutputView<K, V> implements KafkaTopicOutput<K, V> {
+
+        private final String name;
+        private final PartDescriptor<K> key;
+        private final PartDescriptor<V> value;
+
+        KafkaTopicOutputView(final TopicDescriptor<K, V> source) {
+            this.name = source.name();
+            this.key = new KafkaPart<>(Part.key, source.key().type(), this);
+            this.value = new KafkaPart<>(Part.value, source.value().type(), this);
+        }
+
+        @Override
+        public String name() {
+            return name;
+        }
+
+        @Override
+        public PartDescriptor<K> key() {
+            return key;
+        }
+
+        @Override
+        public PartDescriptor<V> value() {
+            return value;
+        }
+    }
+
     private static final class OutputTopicDescriptor<K, V> extends TopicDescriptor<K, V>
             implements OwnedKafkaTopicOutput<K, V> {
 
@@ -226,27 +278,7 @@ public final class TopicDescriptors {
 
         @Override
         public KafkaTopicInput<K, V> toInput() {
-            return new KafkaTopicInput<>() {
-                @Override
-                public URI id() {
-                    return OutputTopicDescriptor.this.id();
-                }
-
-                @Override
-                public String name() {
-                    return OutputTopicDescriptor.this.name();
-                }
-
-                @Override
-                public PartDescriptor<K> key() {
-                    return OutputTopicDescriptor.this.key();
-                }
-
-                @Override
-                public PartDescriptor<V> value() {
-                    return OutputTopicDescriptor.this.value();
-                }
-            };
+            return new KafkaTopicInputView<>(this);
         }
     }
 
@@ -263,27 +295,7 @@ public final class TopicDescriptors {
 
         @Override
         public KafkaTopicOutput<K, V> toOutput() {
-            return new KafkaTopicOutput<>() {
-                @Override
-                public URI id() {
-                    return InputTopicDescriptor.this.id();
-                }
-
-                @Override
-                public String name() {
-                    return InputTopicDescriptor.this.name();
-                }
-
-                @Override
-                public PartDescriptor<K> key() {
-                    return InputTopicDescriptor.this.key();
-                }
-
-                @Override
-                public PartDescriptor<V> value() {
-                    return InputTopicDescriptor.this.value();
-                }
-            };
+            return new KafkaTopicOutputView<>(this);
         }
     }
 
