@@ -19,7 +19,7 @@ package io.github.creek.service.ks.connected.services.demo.handle.occurrence.fil
 import static io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceFilteringServiceDescriptor.HandleUsagePresidentsStream;
 import static io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceFilteringServiceDescriptor.HandleUsageStream;
 import static java.util.Objects.requireNonNull;
-import static org.creekservice.api.kafka.metadata.KafkaTopicDescriptor.DEFAULT_CLUSTER_NAME;
+import static org.creekservice.api.kafka.metadata.topic.KafkaTopicDescriptor.DEFAULT_CLUSTER_NAME;
 
 import java.util.Set;
 import org.apache.kafka.streams.StreamsBuilder;

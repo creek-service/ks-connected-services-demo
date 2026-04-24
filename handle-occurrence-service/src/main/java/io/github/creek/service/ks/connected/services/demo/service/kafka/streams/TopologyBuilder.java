@@ -19,7 +19,7 @@ package io.github.creek.service.ks.connected.services.demo.service.kafka.streams
 import static io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceServiceDescriptor.TweetHandleUsageStream;
 import static io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceServiceDescriptor.TweetTextStream;
 import static java.util.Objects.requireNonNull;
-import static org.creekservice.api.kafka.metadata.KafkaTopicDescriptor.DEFAULT_CLUSTER_NAME;
+import static org.creekservice.api.kafka.metadata.topic.KafkaTopicDescriptor.DEFAULT_CLUSTER_NAME;
 
 import java.util.HashMap;
 import java.util.Map;
