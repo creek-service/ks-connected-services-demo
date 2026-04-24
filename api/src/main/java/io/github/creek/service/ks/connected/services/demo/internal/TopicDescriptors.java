@@ -22,6 +22,7 @@ import static org.creekservice.api.kafka.metadata.SerializationFormat.serializat
 import java.net.URI;
 import java.util.Optional;
 import java.util.function.Supplier;
+import org.creekservice.api.kafka.metadata.SerializationFormat;
 import org.creekservice.api.kafka.metadata.topic.CreatableKafkaTopicInternal;
 import org.creekservice.api.kafka.metadata.topic.KafkaTopicConfig;
 import org.creekservice.api.kafka.metadata.topic.KafkaTopicDescriptor;
@@ -31,13 +32,13 @@ import org.creekservice.api.kafka.metadata.topic.KafkaTopicInternal;
 import org.creekservice.api.kafka.metadata.topic.KafkaTopicOutput;
 import org.creekservice.api.kafka.metadata.topic.OwnedKafkaTopicInput;
 import org.creekservice.api.kafka.metadata.topic.OwnedKafkaTopicOutput;
-import org.creekservice.api.kafka.metadata.SerializationFormat;
 
 /**
  * Helper for creating topic descriptors.
  *
- * <p>Wondering where the builds are for {@link org.creekservice.api.kafka.metadata.topic.KafkaTopicInput}
- * or {@link org.creekservice.api.kafka.metadata.topic.KafkaTopicOutput}? These should only be created by
+ * <p>Wondering where the builds are for {@link
+ * org.creekservice.api.kafka.metadata.topic.KafkaTopicInput} or {@link
+ * org.creekservice.api.kafka.metadata.topic.KafkaTopicOutput}? These should only be created by
  * calling {@link OwnedKafkaTopicInput#toOutput()} and {@link OwnedKafkaTopicOutput#toInput()} on an
  * owned topic descriptor, respectively.
  */
@@ -52,8 +53,9 @@ public final class TopicDescriptors {
      * Create an input Kafka topic descriptor.
      *
      * <p>Looking for a version that returns {@link
-     * org.creekservice.api.kafka.metadata.topic.KafkaTopicInput}? Get one of those by calling {@link
-     * OwnedKafkaTopicOutput#toInput()} on the topic descriptor defined in the upstream component.
+     * org.creekservice.api.kafka.metadata.topic.KafkaTopicInput}? Get one of those by calling
+     * {@link OwnedKafkaTopicOutput#toInput()} on the topic descriptor defined in the upstream
+     * component.
      *
      * @param topicName the name of the topic
      * @param keyType the type serialized into the Kafka record key.
@@ -119,8 +121,9 @@ public final class TopicDescriptors {
      * Create an output Kafka topic descriptor.
      *
      * <p>Looking for a version that returns {@link
-     * org.creekservice.api.kafka.metadata.topic.KafkaTopicOutput}? Get one of those by calling {@link
-     * OwnedKafkaTopicInput#toOutput()} on the topic descriptor defined in the downstream component.
+     * org.creekservice.api.kafka.metadata.topic.KafkaTopicOutput}? Get one of those by calling
+     * {@link OwnedKafkaTopicInput#toOutput()} on the topic descriptor defined in the downstream
+     * component.
      *
      * @param topicName the name of the topic
      * @param keyType the type serialized into the Kafka record key.
