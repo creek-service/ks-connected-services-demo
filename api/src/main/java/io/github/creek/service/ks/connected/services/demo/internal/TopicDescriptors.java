@@ -21,6 +21,7 @@ import static org.creekservice.api.kafka.metadata.SerializationFormat.serializat
 
 import java.net.URI;
 import java.util.Optional;
+import java.util.function.Supplier;
 import org.creekservice.api.kafka.metadata.topic.CreatableKafkaTopicInternal;
 import org.creekservice.api.kafka.metadata.topic.KafkaTopicConfig;
 import org.creekservice.api.kafka.metadata.topic.KafkaTopicDescriptor;
@@ -140,9 +141,21 @@ public final class TopicDescriptors {
     private static final class KafkaPart<T> implements PartDescriptor<T> {
 
         private final Class<T> type;
+        private final PartDescriptor.Part part;
+        private final Supplier<KafkaTopicDescriptor<?, ?>> topicRef;
 
-        KafkaPart(final Class<T> type) {
+        KafkaPart(
+                final Class<T> type,
+                final PartDescriptor.Part part,
+                final Supplier<KafkaTopicDescriptor<?, ?>> topicRef) {
             this.type = requireNonNull(type, "type");
+            this.part = requireNonNull(part, "part");
+            this.topicRef = requireNonNull(topicRef, "topicRef");
+        }
+
+        @Override
+        public PartDescriptor.Part name() {
+            return part;
         }
 
         @Override
@@ -153,6 +166,11 @@ public final class TopicDescriptors {
         @Override
         public Class<T> type() {
             return type;
+        }
+
+        @Override
+        public KafkaTopicDescriptor<?, ?> topic() {
+            return topicRef.get();
         }
     }
 
@@ -171,8 +189,8 @@ public final class TopicDescriptors {
                 final Class<V> valueType,
                 final Optional<TopicConfigBuilder> config) {
             this.topicName = requireNonNull(topicName, "topicName");
-            this.key = new KafkaPart<>(keyType);
-            this.value = new KafkaPart<>(valueType);
+            this.key = new KafkaPart<>(keyType, PartDescriptor.Part.key, () -> this);
+            this.value = new KafkaPart<>(valueType, PartDescriptor.Part.value, () -> this);
             this.config = requireNonNull(config, "config").map(TopicConfigBuilder::build);
             this.id = KafkaTopicDescriptor.super.id();
         }
