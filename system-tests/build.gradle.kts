@@ -27,7 +27,7 @@ dependencies {
     systemTestComponent(project(":services"))
 
     // Install the creek-kafka system-test extension:
-    systemTestExtension("org.creekservice:creek-kafka-test-extension:${creekVersion}")
+    systemTestExtension("org.creekservice:creek-kafka-test-extension:$creekVersion")
 }
 
 tasks.systemTest {
