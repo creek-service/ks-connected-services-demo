@@ -31,10 +31,6 @@ plugins {
     jacoco
 }
 
-// Applied imperatively to avoid versionCatalogs conflict in generatePrecompiledScriptPluginAccessors
-// when using Gradle 8.1+ (where versionCatalogs became stable and is registered in synthetic projects)
-apply(plugin = "org.creekservice.system.test")
-
 repositories {
     mavenCentral()
 }
