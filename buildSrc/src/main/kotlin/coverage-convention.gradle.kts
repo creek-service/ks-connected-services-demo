@@ -17,9 +17,13 @@
 /**
  * Standard coverage configuration of Creek aggregates, utilising Jacoco and Codecov.
  *
- * <p>Version: 1.4
+ * <p>Version:
+ * <ul>
+ * <li> 1.5: Removed wiring of system test execution data, as its handled by the plugin</li>
+ * </ul>
  *
- * <p>Apply to root project only
+ *
+ * <p>Apply to the root project only
  */
 
 plugins {
@@ -39,9 +43,15 @@ allprojects {
     apply(plugin = "java")
 
     tasks.withType<JacocoReport>().configureEach {
-        dependsOn(tasks.test)
         reports {
             xml.required.set(true)
+            html.required.set(true)
         }
     }
+}
+
+tasks.register("coverage") {
+    group = "creek"
+    description = "generate coverage report"
+    dependsOn("test", "jacocoTestReport")
 }
