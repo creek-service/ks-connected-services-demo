@@ -3,4 +3,5 @@ module ks.connected.services.demo.handle.occurrence.filtering.service {
     requires creek.service.context;
     requires creek.kafka.streams.extension;
     requires org.apache.logging.log4j;
+    requires static com.github.spotbugs.annotations;
 }
