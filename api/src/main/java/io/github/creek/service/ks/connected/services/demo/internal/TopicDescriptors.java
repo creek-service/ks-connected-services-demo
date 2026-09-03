@@ -19,6 +19,7 @@ package io.github.creek.service.ks.connected.services.demo.internal;
 import static java.util.Objects.requireNonNull;
 import static org.creekservice.api.kafka.metadata.SerializationFormat.serializationFormat;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Optional;
 import org.creekservice.api.kafka.metadata.SerializationFormat;
 import org.creekservice.api.kafka.metadata.topic.CreatableKafkaTopicInternal;
@@ -174,6 +175,10 @@ public final class TopicDescriptors {
     }
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    @SuppressFBWarnings(
+            value = "CT_CONSTRUCTOR_THROW",
+            justification =
+                    "Abstract base class with final subclasses - safe from finalizer attacks")
     private abstract static class TopicDescriptor<K, V> implements KafkaTopicDescriptor<K, V> {
 
         private final String topicName;
