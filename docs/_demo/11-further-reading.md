@@ -19,8 +19,9 @@ covers useful core Creek features not covered by this tutorial. For example:
 
 Additional tutorials will be added over time. These can be found on the [tutorials page]({{ site.url | append: "/tutorials/" }}).
 
-The payloads used in this tutorial were simple types like `Integer` and `String`.
-Obviously, this massively limits Creek's utility and is why Creek is still in alpha release.
-Work to extend this to more complex types using, schema validated, JSON serialization, will be 
-[starting soon <i class="fas fa-external-link-alt"></i>](https://github.com/creek-service/creek-kafka/issues/25){:target="_blank"}.
+This tutorial demonstrated schema-validated JSON payloads for topic values, alongside the simple, natively-serialized,
+types like `String` used by the previous tutorial. See the [JSON schema format section][kafkaJsonSchemaDocs] of the
+`creek-kafka` docs for more on the JSON serialization support used in this tutorial.
 {: .notice--info}
+
+[kafkaJsonSchemaDocs]: https://www.creekservice.org/creek-kafka/#json-schema-format

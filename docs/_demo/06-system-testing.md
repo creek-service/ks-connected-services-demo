@@ -15,6 +15,19 @@ Creek [system-tests][systemTests] enable black-box testing of an aggregate's com
 Services are run, locally, in Docker containers. Test inputs and expected
 outputs are defined in YAML file, and Creek does the rest.
 
+**ProTip:** As topic values in this tutorial are schema-validated JSON payloads, the `system-tests` module installs
+the `creek-kafka-json-serde` system-test extension, alongside the existing `creek-kafka-test-extension`. Doing so is
+enough for a Schema Registry container to be started automatically for system-test runs, and for the JSON schemas
+generated from the `api` module's `@GeneratesSchema`-annotated types to be registered against it, before any service
+under test starts. No further configuration is required.
+{: .notice--info}
+
+Before any service under test is started, Creek creates the resources those services own, for example Kafka topics
+and their JSON schemas, and then produces any configured seed data to them. Only once that's done are the services
+under test started. This ordering matters: it means a service can rely on the topics, and schemas, it owns already
+existing by the time it starts, and it's the only way to get seed records into a topic that a service both owns and
+consumes from before that service itself starts and could otherwise produce to it.
+
 The service Docker images used in the system tests are the very same images that will be deployed through to Production.
 By testing the actual Docker images, and assuming good test coverage, confidence can be very high that the services does what's required.
 
@@ -101,11 +114,11 @@ When executed, the system tests should result in a test failure that looks somet
 ```
 basic suite:test 1: Additional records were produced.
 Unmatched records: [
-        ConsumedRecord{record=ConsumerRecord(topic = twitter.handle.usage, partition = 2, leaderEpoch = 0, offset = 3, CreateTime = 1678453297029, serialized key size = 9, serialized value size = 4, headers = RecordHeaders(headers = [], isReadOnly = false), key = [B@6d293993, value = [B@475f5672), deserializedKey=@JoeBiden, deserializedValue=1},
-        ConsumedRecord{record=ConsumerRecord(topic = twitter.handle.usage, partition = 2, leaderEpoch = 0, offset = 4, CreateTime = 1678453297029, serialized key size = 9, serialized value size = 4, headers = RecordHeaders(headers = [], isReadOnly = false), key = [B@616a06e3, value = [B@42297bdf), deserializedKey=@JoeBiden, deserializedValue=1},
-        ConsumedRecord{record=ConsumerRecord(topic = twitter.handle.usage, partition = 3, leaderEpoch = 0, offset = 1, CreateTime = 1678453297029, serialized key size = 16, serialized value size = 4, headers = RecordHeaders(headers = [], isReadOnly = false), key = [B@6a55594b, value = [B@632b305d), deserializedKey=@realDonaldTrump, deserializedValue=1},
-        ConsumedRecord{record=ConsumerRecord(topic = twitter.handle.usage, partition = 3, leaderEpoch = 0, offset = 2, CreateTime = 1678453297029, serialized key size = 12, serialized value size = 4, headers = RecordHeaders(headers = [], isReadOnly = false), key = [B@44598ef7, value = [B@57fdb8a4), deserializedKey=@BarackObama, deserializedValue=1},
-        ConsumedRecord{record=ConsumerRecord(topic = twitter.handle.usage, partition = 4, leaderEpoch = 0, offset = 0, CreateTime = 1678453297029, serialized key size = 6, serialized value size = 4, headers = RecordHeaders(headers = [], isReadOnly = false), key = [B@195113de, value = [B@3ebc955b), deserializedKey=@POTUS, deserializedValue=2}
+        ConsumedRecord{record=ConsumerRecord(topic = twitter.handle.usage, partition = 2, leaderEpoch = 0, offset = 3, CreateTime = 1678453297029, serialized key size = 9, serialized value size = 41, headers = RecordHeaders(headers = [], isReadOnly = false), key = [B@6d293993, value = [B@475f5672), deserializedKey=@JoeBiden, deserializedValue=HandleUsage[handle=@JoeBiden, count=1]},
+        ConsumedRecord{record=ConsumerRecord(topic = twitter.handle.usage, partition = 2, leaderEpoch = 0, offset = 4, CreateTime = 1678453297029, serialized key size = 9, serialized value size = 41, headers = RecordHeaders(headers = [], isReadOnly = false), key = [B@616a06e3, value = [B@42297bdf), deserializedKey=@JoeBiden, deserializedValue=HandleUsage[handle=@JoeBiden, count=1]},
+        ConsumedRecord{record=ConsumerRecord(topic = twitter.handle.usage, partition = 3, leaderEpoch = 0, offset = 1, CreateTime = 1678453297029, serialized key size = 16, serialized value size = 47, headers = RecordHeaders(headers = [], isReadOnly = false), key = [B@6a55594b, value = [B@632b305d), deserializedKey=@realDonaldTrump, deserializedValue=HandleUsage[handle=@realDonaldTrump, count=1]},
+        ConsumedRecord{record=ConsumerRecord(topic = twitter.handle.usage, partition = 3, leaderEpoch = 0, offset = 2, CreateTime = 1678453297029, serialized key size = 12, serialized value size = 43, headers = RecordHeaders(headers = [], isReadOnly = false), key = [B@44598ef7, value = [B@57fdb8a4), deserializedKey=@BarackObama, deserializedValue=HandleUsage[handle=@BarackObama, count=1]},
+        ConsumedRecord{record=ConsumerRecord(topic = twitter.handle.usage, partition = 4, leaderEpoch = 0, offset = 0, CreateTime = 1678453297029, serialized key size = 6, serialized value size = 35, headers = RecordHeaders(headers = [], isReadOnly = false), key = [B@195113de, value = [B@3ebc955b), deserializedKey=@POTUS, deserializedValue=HandleUsage[handle=@POTUS, count=2]}
 ]
 ```
 

@@ -15,7 +15,8 @@ microservice that consumes the output of the first.
 
 The first service, added in the [previous tutorial](/basic-kafka-streams-demo/), detected the use of Twitter
 handles, e.g. `@elonmusk`, in Tweets. Twitter handle occurrences were output to the `twitter.handle.usage` Kafka topic.
-Records on this topic have the Twitter handle in their key and the number of concurrences in the value.
+Records on this topic have the Twitter handle in their key and a JSON value, containing the handle and the number of
+occurrences, that's validated against a schema registered in a Schema Registry.
 
 This tutorial will add a new filtering service. This new service will consume the output topic of the existing service,
 and filter out any handles not associated with a hard-coded list of USA presidents.
@@ -32,6 +33,9 @@ However, the key features this tutorial is designed to highlight are:
     If you wish to jump straight to this, see the [Service descriptor][svcDescStep] step.
   * How to write black-box system tests that cover the functionality of multiple services working together.
     If you wish to jump straight to this, see the [System test][sysTestStep] step.
+  * How to define a schema-validated JSON payload for a topic's value, and how schema _ownership_ is tracked
+    when one service's output is consumed as another's input.
+    If you wish to jump straight to this, see the [Service descriptor][svcDescStep] step.
 
 In addition to the above key features, by the end of this tutorial you should also know:
   * How to add new microservices to an aggregate repository.
@@ -55,7 +59,9 @@ linking services and system testing linked services.
 
 The tutorial will lead you through adding a second `handle-occurrence-filtering-service` alongside the existing 
 `handle-occurrence-service`. This new service will consume the `twitter.handle.usage` Kafka topic, owned and populated 
-by the `handle-occurrence-service`.
+by the `handle-occurrence-service`. The topic's value is a schema-validated JSON payload, so the filtering service
+can consume it without needing to know anything about how the `handle-occurrence-service` produces it, other than
+its published schema.
 
 **ProTip:** The concept of topic _ownership_ defines which service, or aggregate, and hence team within an organisation,
 is responsible for a topic, its configuration, and the data it contains.

@@ -31,11 +31,13 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import org.apache.kafka.streams.TestInputTopic;
 import org.apache.kafka.streams.TestOutputTopic;
 // end-snippet
+import io.github.creek.service.ks.connected.services.demo.api.model.HandleUsage;
 import io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceServiceDescriptor;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.TopologyTestDriver;
+import org.creekservice.api.kafka.serde.json.JsonSerdeExtensionOptions;
 import org.creekservice.api.kafka.streams.extension.KafkaStreamsExtension;
-import org.creekservice.api.kafka.streams.test.TestKafkaStreamsExtensionOptions;
+import org.creekservice.api.kafka.streams.extension.KafkaStreamsExtensionOptions;
 import org.creekservice.api.service.context.CreekContext;
 import org.creekservice.api.service.context.CreekServices;
 import org.creekservice.api.test.util.TestPaths;
@@ -56,7 +58,7 @@ class TopologyBuilderTest {
     // formatting:off
 // begin-snippet: topic-declarations
     private TestInputTopic<Long, String> tweetTextStream;
-    private TestOutputTopic<String, Integer> handleUsageStream;
+    private TestOutputTopic<String, HandleUsage> handleUsageStream;
 // end-snippet
     // formatting:on
 
@@ -65,7 +67,12 @@ class TopologyBuilderTest {
         // Initialise Creek in 'test mode':
         ctx =
                 CreekServices.builder(new HandleOccurrenceServiceDescriptor())
-                        .with(TestKafkaStreamsExtensionOptions.defaults())
+                        .with(KafkaStreamsExtensionOptions.testBuilder().build())
+                        // Required when using JSON serialization for topic values/keys.
+                        // Registers JSON serializers/deserializers with the test framework, using
+                        // a mock Schema Registry client so no real Schema Registry is needed for
+                        // unit tests.
+                        .with(JsonSerdeExtensionOptions.testBuilder().build())
                         .build();
     }
 
@@ -103,8 +110,8 @@ class TopologyBuilderTest {
 
         // Then:
         assertThat(handleUsageStream.readKeyValuesToList(), containsInAnyOrder(
-                pair("@PepitoTheCat", 2),
-                pair("@BillyM2k", 1)
+                pair("@PepitoTheCat", new HandleUsage("@PepitoTheCat", 2)),
+                pair("@BillyM2k", new HandleUsage("@BillyM2k", 1))
         ));
     }
 // end-snippet

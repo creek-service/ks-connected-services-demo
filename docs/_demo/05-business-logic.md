@@ -13,7 +13,8 @@ As this is not the focus of this tutorial, this logic is kept deliberately trivi
 it will filter the input topic, and produce the resulting records to the service's output topic.
 The filter will exclude any records with Twitter handles not in a hardcoded list of accounts linked to presidents of the USA. 
 
-As a reminder, the input records store the Twitter handle in the record's key and the number of occurrences in the record's value. 
+As a reminder, the input records store the Twitter handle in the record's key and a `HandleUsage(String handle, int count)`
+JSON value, containing the handle and the number of occurrences, in the record's value.
 The service's output topic will follow the same schema.
 
 ## Define the stream topology
@@ -73,6 +74,24 @@ If the change is intentional, then the `handle-occurrence-filtering-service/src/
 file can be updated to reflect the latest topology.
 
 For this tutorial, the test can simple be disabled or deleted.
+
+Because the topics now carry a schema-validated JSON value, the test's Creek setup needs a second test-option
+builder, alongside the existing Kafka Streams one:
+
+```java
+ctx = CreekServices.builder(new HandleOccurrenceFilteringServiceDescriptor())
+        .with(KafkaStreamsExtensionOptions.testBuilder().build())
+        // Required when using JSON serialization for topic values/keys.
+        // Registers JSON serializers/deserializers with the test framework, using a mock
+        // Schema Registry client so no real Schema Registry is needed for unit tests.
+        .with(JsonSerdeExtensionOptions.testBuilder().build())
+        .build();
+```
+
+Both builders are needed: `KafkaStreamsExtensionOptions.testBuilder()` configures the Kafka Streams extension for
+disconnected unit testing, while `JsonSerdeExtensionOptions.testBuilder()` registers the JSON serde with a mock
+Schema Registry client, so unit tests validate against, and serialize using, the generated schemas without needing a
+real Schema Registry.
 
 [nameJavaDocs]: https://javadoc.io/doc/org.creekservice/creek-kafka-streams-extension/latest/creek.kafka.streams.extension/org/creekservice/api/kafka/streams/extension/util/Name.html
 [kafkaStreams]: https://kafka.apache.org/documentation/streams/

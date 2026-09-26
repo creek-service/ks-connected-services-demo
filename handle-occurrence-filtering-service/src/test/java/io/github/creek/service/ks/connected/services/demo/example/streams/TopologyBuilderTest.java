@@ -24,8 +24,9 @@ import io.github.creek.service.ks.connected.services.demo.handle.occurrence.filt
 import io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceFilteringServiceDescriptor;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.TopologyTestDriver;
+import org.creekservice.api.kafka.serde.json.JsonSerdeExtensionOptions;
 import org.creekservice.api.kafka.streams.extension.KafkaStreamsExtension;
-import org.creekservice.api.kafka.streams.test.TestKafkaStreamsExtensionOptions;
+import org.creekservice.api.kafka.streams.extension.KafkaStreamsExtensionOptions;
 import org.creekservice.api.service.context.CreekContext;
 import org.creekservice.api.service.context.CreekServices;
 import org.creekservice.api.test.util.TestPaths;
@@ -45,7 +46,12 @@ class TopologyBuilderTest {
     public static void classSetup() {
         ctx =
                 CreekServices.builder(new HandleOccurrenceFilteringServiceDescriptor())
-                        .with(TestKafkaStreamsExtensionOptions.defaults())
+                        .with(KafkaStreamsExtensionOptions.testBuilder().build())
+                        // Required when using JSON serialization for topic values/keys.
+                        // Registers JSON serializers/deserializers with the test framework, using
+                        // a mock Schema Registry client so no real Schema Registry is needed for
+                        // unit tests.
+                        .with(JsonSerdeExtensionOptions.testBuilder().build())
                         .build();
     }
 

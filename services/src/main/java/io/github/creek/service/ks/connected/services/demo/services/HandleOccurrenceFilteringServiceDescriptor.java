@@ -17,8 +17,9 @@
 package io.github.creek.service.ks.connected.services.demo.services;
 
 import static io.github.creek.service.ks.connected.services.demo.internal.TopicConfigBuilder.withPartitions;
-import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.outputTopic;
+import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.outputTopicWithJsonValue;
 
+import io.github.creek.service.ks.connected.services.demo.api.model.HandleUsage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -38,13 +39,16 @@ public final class HandleOccurrenceFilteringServiceDescriptor implements Service
 
     // formatting:off
 // begin-snippet: topic-resources
-    // 1. Hookup the handle-occurrence-service's output as this services, unowned, input:
-    public static final KafkaTopicInput<String, Integer> HandleUsageStream =
+    // 1. Hookup the handle-occurrence-service's output as this services, unowned, input.
+    //    The JSON schema for the value remains owned by handle-occurrence-service, the service
+    //    that owns the topic - it is only unowned from this service's point of view:
+    public static final KafkaTopicInput<String, HandleUsage> HandleUsageStream =
             register(HandleOccurrenceServiceDescriptor.TweetHandleUsageStream.toInput());
 
-    // 2. Define the filtered output topic, conceptually owned by this service:
-    public static final OwnedKafkaTopicOutput<String, Integer> HandleUsagePresidentsStream =
-            register(outputTopic(
+    // 2. Define the filtered output topic, conceptually owned by this service. This creates a
+    //    second, independently-owned JSON schema for the same HandleUsage type:
+    public static final OwnedKafkaTopicOutput<String, HandleUsage> HandleUsagePresidentsStream =
+            register(outputTopicWithJsonValue(
                     "twitter.handle.usage.presidents",
                     HandleUsageStream.key().type(),
                     HandleUsageStream.value().type(),

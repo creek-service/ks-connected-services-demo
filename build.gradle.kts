@@ -7,6 +7,7 @@ plugins {
     `publishing-convention` apply false
     id("pl.allegro.tech.build.axion-release") version "1.21.3" // https://plugins.gradle.org/plugin/pl.allegro.tech.build.axion-release
     id("com.bmuschko.docker-remote-api") version "10.0.0" apply false
+    id("org.creekservice.schema.json") version "0.4.5-SNAPSHOT" apply false // https://plugins.gradle.org/plugin/org.creekservice.schema.json
 }
 
 project.version = scmVersion.version
@@ -33,7 +34,7 @@ subprojects {
     }
 
     extra.apply {
-        set("creekVersion", "0.4.4")            // https://mvnrepository.com/artifact/org.creekservice
+        set("creekVersion", "0.4.5-SNAPSHOT")   // https://mvnrepository.com/artifact/org.creekservice
         set("kafkaVersion", "4.3.1")            // https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients
         set("spotBugsVersion", "4.4.2")         // https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-annotations
         set("guavaVersion", "33.7.1-jre")         // https://mvnrepository.com/artifact/com.google.guava/guava

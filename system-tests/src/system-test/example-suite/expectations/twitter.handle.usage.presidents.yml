@@ -4,13 +4,23 @@
 topic: twitter.handle.usage.presidents
 records:
   - key: "@POTUS"
-    value: 2
+    value:
+      handle: "@POTUS"
+      count: 2
   - key: "@JoeBiden"
-    value: 1
+    value:
+      handle: "@JoeBiden"
+      count: 1
   - key: "@realDonaldTrump"
-    value: 1
+    value:
+      handle: "@realDonaldTrump"
+      count: 1
   - key: "@BarackObama"
-    value: 1
+    value:
+      handle: "@BarackObama"
+      count: 1
   - key: "@JoeBiden"
-    value: 1
+    value:
+      handle: "@JoeBiden"
+      count: 1
 # end-snippet
