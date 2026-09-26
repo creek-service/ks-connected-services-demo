@@ -2,9 +2,9 @@ plugins {
     `java-library`
 }
 
-val kafkaVersion: String by extra
-val creekVersion : String by extra
-val spotBugsVersion : String by extra
+val kafkaVersion: String by project
+val creekVersion : String by project
+val spotBugsVersion : String by project
 
 dependencies {
     api("org.creekservice:creek-kafka-metadata:$creekVersion")
