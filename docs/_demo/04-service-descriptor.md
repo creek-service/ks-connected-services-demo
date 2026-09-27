@@ -4,7 +4,6 @@ permalink: /descriptor
 description: Learn how to create a service descriptor using the resources defined in other service descriptors.
 layout: single
 snippet_comment_prefix: "//"
-snippet_source: "../services/src/main/java/io/github/creek/service/ks/connected/services/demo/services/HandleOccurrenceFilteringServiceDescriptor.java"
 ---
 
 The `Add service module` workflow, ran in the previous step, created a `HandleOccurrenceFilteringServiceDescriptor` 
@@ -71,9 +70,9 @@ The aggregate template provided a shell service descriptor in the repository nam
 Add the following to the class to declare the service's input and output topics:
 
 {% highlight java %}
-{% include_snippet class-name %}
+{% include_snippet class-name from ../services/src/main/java/io/github/creek/service/ks/connected/services/demo/services/HandleOccurrenceFilteringServiceDescriptor.java %}
 
-{% include_snippet topic-resources %}
+{% include_snippet topic-resources from ../services/src/main/java/io/github/creek/service/ks/connected/services/demo/services/HandleOccurrenceFilteringServiceDescriptor.java %}
 
     ...
 }
