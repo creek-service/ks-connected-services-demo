@@ -20,8 +20,6 @@ package io.github.creek.service.ks.connected.services.demo.service.kafka.streams
 import static io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceServiceDescriptor.TweetTextStream;
 import static io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceServiceDescriptor.TweetHandleUsageStream;
 import static org.creekservice.api.kafka.metadata.topic.KafkaTopicDescriptor.DEFAULT_CLUSTER_NAME;
-import static org.creekservice.api.kafka.streams.test.TestTopics.inputTopic;
-import static org.creekservice.api.kafka.streams.test.TestTopics.outputTopic;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 // begin-snippet: includes
@@ -89,8 +87,8 @@ class TopologyBuilderTest {
         testDriver = new TopologyTestDriver(topology, ext.properties(DEFAULT_CLUSTER_NAME));
 
         // Create the topologies input and output topics"
-        tweetTextStream = inputTopic(TweetTextStream, ctx, testDriver);
-        handleUsageStream = outputTopic(TweetHandleUsageStream, ctx, testDriver);
+        tweetTextStream = TestTopics.inputTopic(TweetTextStream, ext, testDriver);
+        handleUsageStream = TestTopics.outputTopic(TweetHandleUsageStream, ext, testDriver);
     }
 // end-snippet
     // formatting:on

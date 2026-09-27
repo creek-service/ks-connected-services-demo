@@ -6,10 +6,14 @@ plugins {
 val kafkaVersion: String by extra
 val creekVersion : String by extra
 val spotBugsVersion : String by extra
+val jacksonAnnotationsVersion : String by extra
 
 dependencies {
     api("org.creekservice:creek-kafka-metadata:$creekVersion")
     implementation("org.creekservice:creek-base-annotation:$creekVersion")
+    // Used to control the fidelity of generated JSON schemas, e.g. marking non-primitive
+    // record components as required:
+    api("com.fasterxml.jackson.core:jackson-annotations:$jacksonAnnotationsVersion")
 
     compileOnly("com.github.spotbugs:spotbugs-annotations:$spotBugsVersion")
 

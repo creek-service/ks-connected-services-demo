@@ -25,6 +25,10 @@ import io.github.creek.service.ks.connected.services.demo.services.HandleOccurre
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.TopologyTestDriver;
 import org.creekservice.api.kafka.serde.json.JsonSerdeExtensionOptions;
+import org.creekservice.api.kafka.serde.json.schema.store.client.JsonSchemaStoreClient;
+import org.creekservice.api.kafka.serde.json.schema.store.client.MockJsonSchemaStoreClient;
+import org.creekservice.api.kafka.serde.schema.store.endpoint.MockEndpointsLoader;
+import org.creekservice.api.kafka.serde.schema.store.endpoint.SchemaStoreEndpoints;
 import org.creekservice.api.kafka.streams.extension.KafkaStreamsExtension;
 import org.creekservice.api.kafka.streams.extension.KafkaStreamsExtensionOptions;
 import org.creekservice.api.service.context.CreekContext;
@@ -48,10 +52,23 @@ class TopologyBuilderTest {
                 CreekServices.builder(new HandleOccurrenceFilteringServiceDescriptor())
                         .with(KafkaStreamsExtensionOptions.testBuilder().build())
                         // Required when using JSON serialization for topic values/keys.
-                        // Registers JSON serializers/deserializers with the test framework, using
-                        // a mock Schema Registry client so no real Schema Registry is needed for
-                        // unit tests.
-                        .with(JsonSerdeExtensionOptions.testBuilder().build())
+                        // This service's input topic is owned, and hence has its schema
+                        // registered, by handle-occurrence-service, not by this service. As this
+                        // test only instantiates this service's own descriptor, the default
+                        // JsonSerdeExtensionOptions.testBuilder() mock - which requires a schema
+                        // to have already been registered before it can be looked up - would fail
+                        // to find it. MockJsonSchemaStoreClient is a permissive mock, designed for
+                        // exactly this: testing consumers of a schema they don't own.
+                        .with(
+                                JsonSerdeExtensionOptions.builder()
+                                        .withTypeOverride(
+                                                JsonSchemaStoreClient.Factory.class,
+                                                (schemaRegistryName, endpoints) ->
+                                                        new MockJsonSchemaStoreClient() {})
+                                        .withTypeOverride(
+                                                SchemaStoreEndpoints.Loader.class,
+                                                new MockEndpointsLoader() {})
+                                        .build())
                         .build();
     }
 
