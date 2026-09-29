@@ -34,22 +34,9 @@ The `api` module's `build.gradle.kts` applies the `org.creekservice.schema.json`
 `generateJsonSchema` task. This scans the module for `@GeneratesSchema`-annotated types and writes out a JSON schema
 for each:
 
-```kotlin
-plugins {
-    `java-library`
-    id("org.creekservice.schema.json")
-}
-
-dependencies {
-    implementation("org.creekservice:creek-base-annotation:$creekVersion")
-    jsonSchemaGenerator("org.creekservice:creek-json-schema-generator:$creekVersion")
-}
-
-creek.schema.json {
-    typeScanning.moduleWhiteList(moduleName)
-    subTypeScanning.moduleWhiteList(moduleName)
-}
-```
+{% highlight kotlin %}
+{% include_snippet all from ../api/build.gradle.kts %}
+{% endhighlight %}
 
 Restricting the class and module path scanning to the `api` module's own module name, as above, keeps schema
 generation fast, by avoiding scanning the whole class path for annotated types.
