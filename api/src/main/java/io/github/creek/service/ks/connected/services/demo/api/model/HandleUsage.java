@@ -19,13 +19,15 @@ package io.github.creek.service.ks.connected.services.demo.api.model;
 import static java.util.Objects.requireNonNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.creekservice.api.base.annotation.schema.GeneratesSchema;
 
 // begin-snippet: handle-usage
 /** The number of times a Twitter handle has been mentioned. */
 @GeneratesSchema
 public record HandleUsage(
-        @JsonProperty(value = "handle", required = true) String handle, int count) {
+        @JsonProperty(value = "handle", required = true) @Schema(minLength = 1) String handle,
+        @Schema(minimum = "1") int count) {
 
     public HandleUsage {
         requireNonNull(handle, "handle");

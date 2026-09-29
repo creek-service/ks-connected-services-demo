@@ -5,6 +5,7 @@ module ks.connected.services.demo.api {
     requires transitive creek.kafka.metadata;
     requires creek.base.annotation;
     requires com.fasterxml.jackson.annotation;
+    requires static io.swagger.v3.oas.annotations;
     requires static com.github.spotbugs.annotations;
 
     exports io.github.creek.service.ks.connected.services.demo.api;
