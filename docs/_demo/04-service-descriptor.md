@@ -15,9 +15,9 @@ This is one of the two key features of this tutorial. The other being [system te
 
 ## Define the JSON payload
 
-Rather than reuse the primitive types used by the previous tutorial, topic values in this tutorial are schema-validated
-JSON payloads. This gives Creek something to validate incoming and outgoing records against, and gives consumers of a
-topic a documented, machine-checkable contract for its value, instead of just a `String` or an `Integer`.
+The previous tutorial already defined schema-validated JSON payloads for both `TweetData` (input) and
+`HandleUsage` (output). Keep those types and the first service's existing topic declarations: the new
+service will consume `HandleUsage` and produce a filtered view using the same payload type.
 
 The `api` module defines the Java types used as topic values. Each type that should have a JSON schema generated for it
 is annotated with [`@GeneratesSchema`][generatesSchema]:
@@ -104,8 +104,8 @@ This is just a convenient & type-safe way of ensuring the key and value types of
 that the output topic is simply a filtered view of the input topic.
 
 `outputTopic(...)` defaults to a schema-validated JSON value and a Kafka-native key.
-For a Kafka-native value instead, use the overload accepting explicit key and value formats,
-as the occurrence service does for its `twitter.tweet.text` input topic.
+For a Kafka-native value instead, use the overload accepting explicit key and value formats.
+The occurrence service's `twitter.tweet.text` input already uses a JSON `TweetData` value.
 
 **ProTip:** _Ownership_ applies to a topic's JSON schema too, and it follows the ownership of the topic, not of the
 Java type used as the value. `HandleUsageStream`, (step #1 above), is an _unowned_ input, so its JSON schema is

@@ -73,25 +73,42 @@ The test compares the topology with the last know topology and fails if they dif
 If the change is intentional, then the `handle-occurrence-filtering-service/src/test/resources/kafka/streams/expected_topology.txt`
 file can be updated to reflect the latest topology.
 
-For this tutorial, the test can simple be disabled or deleted.
+For this tutorial, update the `expected_topology.txt` file to match the new filter topology,
+so the guard stays in place:
 
-Because the topics now carry a schema-validated JSON value, the test's Creek setup needs a second test-option
-builder, alongside the existing Kafka Streams one:
+```text
+Topologies:
+   Sub-topology: 0
+    Source: ingest-twitter.handle.usage (topics: [twitter.handle.usage])
+      --> filter-out-non-presidents
+    Processor: filter-out-non-presidents (stores: [])
+      --> egress-twitter.handle.usage.presidents
+      <-- ingest-twitter.handle.usage
+    Sink: egress-twitter.handle.usage.presidents (topic: twitter.handle.usage.presidents)
+      <-- filter-out-non-presidents
+```
+
+Because the topics carry a schema-validated JSON value, the test's Creek setup needs JSON serde
+options alongside the existing Kafka Streams ones. Unlike the first service, this service only
+*consumes* its input schema; its descriptor does not register that schema as owned. The default
+JSON test builder therefore cannot look up the input schema when testing this descriptor alone.
+Use the permissive `MockJsonSchemaStoreClient` with `MockEndpointsLoader` instead:
 
 ```java
 ctx = CreekServices.builder(new HandleOccurrenceFilteringServiceDescriptor())
         .with(KafkaStreamsExtensionOptions.testBuilder().build())
-        // Required when using JSON serialization for topic values/keys.
-        // Registers JSON serializers/deserializers with the test framework, using a mock
-        // Schema Registry client so no real Schema Registry is needed for unit tests.
-        .with(JsonSerdeExtensionOptions.testBuilder().build())
+        .with(JsonSerdeExtensionOptions.builder()
+                .withTypeOverride(JsonSchemaStoreClient.Factory.class,
+                        (schemaRegistryName, endpoints) -> new MockJsonSchemaStoreClient() {})
+                .withTypeOverride(SchemaStoreEndpoints.Loader.class, new MockEndpointsLoader() {})
+                .build())
         .build();
 ```
 
-Both builders are needed: `KafkaStreamsExtensionOptions.testBuilder()` configures the Kafka Streams extension for
-disconnected unit testing, while `JsonSerdeExtensionOptions.testBuilder()` registers the JSON serde with a mock
-Schema Registry client, so unit tests validate against, and serialize using, the generated schemas without needing a
-real Schema Registry.
+Import `JsonSchemaStoreClient`, `MockJsonSchemaStoreClient`, `SchemaStoreEndpoints`, and
+`MockEndpointsLoader` for the new setup. The permissive client lets the test resolve the
+unowned input schema without a real Schema Registry; the owned output schema is still
+registered from this service's descriptor.
 
 [nameJavaDocs]: https://javadoc.io/doc/org.creekservice/creek-kafka-streams-extension/latest/creek.kafka.streams.extension/org/creekservice/api/kafka/streams/extension/util/Name.html
 [kafkaStreams]: https://kafka.apache.org/documentation/streams/

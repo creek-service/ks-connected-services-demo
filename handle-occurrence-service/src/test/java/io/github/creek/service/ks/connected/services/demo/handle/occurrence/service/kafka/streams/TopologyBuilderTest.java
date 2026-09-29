@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 Creek Contributors (https://github.com/creek-service)
+ * Copyright 2022-2023 Creek Contributors (https://github.com/creek-service)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 package io.github.creek.service.ks.connected.services.demo.handle.occurrence.service.kafka.streams;
 
 // formatting:off
+import static io.github.creek.service.ks.connected.services.demo.handle.occurrence.service.kafka.streams.TestTopics.inputTopic;
+import static io.github.creek.service.ks.connected.services.demo.handle.occurrence.service.kafka.streams.TestTopics.outputTopic;
 import static io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceServiceDescriptor.TweetTextStream;
 import static io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceServiceDescriptor.TweetHandleUsageStream;
 import static org.creekservice.api.kafka.metadata.topic.KafkaTopicDescriptor.DEFAULT_CLUSTER_NAME;
@@ -30,6 +32,7 @@ import org.apache.kafka.streams.TestInputTopic;
 import org.apache.kafka.streams.TestOutputTopic;
 // end-snippet
 import io.github.creek.service.ks.connected.services.demo.api.model.HandleUsage;
+import io.github.creek.service.ks.connected.services.demo.api.model.TweetData;
 import io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceServiceDescriptor;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.TopologyTestDriver;
@@ -55,7 +58,7 @@ class TopologyBuilderTest {
     private Topology topology;
     // formatting:off
 // begin-snippet: topic-declarations
-    private TestInputTopic<Long, String> tweetTextStream;
+    private TestInputTopic<Long, TweetData> tweetTextStream;
     private TestOutputTopic<String, HandleUsage> handleUsageStream;
 // end-snippet
     // formatting:on
@@ -65,11 +68,10 @@ class TopologyBuilderTest {
         // Initialise Creek in 'test mode':
         ctx =
                 CreekServices.builder(new HandleOccurrenceServiceDescriptor())
+                        // configure creek to work with mocks for Kafka Streams.
                         .with(KafkaStreamsExtensionOptions.testBuilder().build())
                         // Required when using JSON serialization for topic values/keys.
-                        // Registers JSON serializers/deserializers with the test framework, using
-                        // a mock Schema Registry client so no real Schema Registry is needed for
-                        // unit tests.
+                        // Registers JSON serializers/deserializers with the test framework.
                         .with(JsonSerdeExtensionOptions.testBuilder().build())
                         .build();
     }
@@ -87,8 +89,8 @@ class TopologyBuilderTest {
         testDriver = new TopologyTestDriver(topology, ext.properties(DEFAULT_CLUSTER_NAME));
 
         // Create the topologies input and output topics"
-        tweetTextStream = TestTopics.inputTopic(TweetTextStream, ext, testDriver);
-        handleUsageStream = TestTopics.outputTopic(TweetHandleUsageStream, ext, testDriver);
+        tweetTextStream = inputTopic(TweetTextStream, ext, testDriver);
+        handleUsageStream = outputTopic(TweetHandleUsageStream, ext, testDriver);
     }
 // end-snippet
     // formatting:on
@@ -103,8 +105,10 @@ class TopologyBuilderTest {
     @Test
     void shouldOutputHandleOccurrences() {
         // When:
-        tweetTextStream.pipeInput(1622262145390972929L, "@PepitoTheCat @BillyM2k @PepitoTheCat Responding to feedback, " +
-                "Twitter will enable a light, write-only API for bots providing good content that is free.");
+        tweetTextStream.pipeInput(1622262145390972929L,
+                new TweetData(1622262145390972929L,
+                        "@PepitoTheCat @BillyM2k @PepitoTheCat Responding to feedback, " +
+                        "Twitter will enable a light, write-only API for bots providing good content that is free."));
 
         // Then:
         assertThat(handleUsageStream.readKeyValuesToList(), containsInAnyOrder(
