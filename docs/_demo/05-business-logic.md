@@ -84,21 +84,9 @@ options alongside the existing Kafka Streams ones. Unlike the first service, thi
 JSON test builder therefore cannot look up the input schema when testing this descriptor alone.
 Use the permissive `MockJsonSchemaStoreClient` with `MockEndpointsLoader` instead:
 
-```java
-ctx = CreekServices.builder(new HandleOccurrenceFilteringServiceDescriptor())
-        .with(KafkaStreamsExtensionOptions.testBuilder().build())
-        .with(JsonSerdeExtensionOptions.builder()
-                .withTypeOverride(JsonSchemaStoreClient.Factory.class,
-                        (schemaRegistryName, endpoints) -> new MockJsonSchemaStoreClient() {})
-                .withTypeOverride(SchemaStoreEndpoints.Loader.class, new MockEndpointsLoader() {})
-                .build())
-        .build();
-```
-
-Import `JsonSchemaStoreClient`, `MockJsonSchemaStoreClient`, `SchemaStoreEndpoints`, and
-`MockEndpointsLoader` for the new setup. The permissive client lets the test resolve the
-unowned input schema without a real Schema Registry; the owned output schema is still
-registered from this service's descriptor.
+{% highlight java %}
+{% include_snippet classSetup from ../handle-occurrence-filtering-service/src/test/java/io/github/creek/service/ks/connected/services/demo/handle/occurrence/filtering/service/kafka/streams/TopologyBuilderTest.java %}
+{% endhighlight %}
 
 [nameJavaDocs]: https://javadoc.io/doc/org.creekservice/creek-kafka-streams-extension/latest/creek.kafka.streams.extension/org/creekservice/api/kafka/streams/extension/util/Name.html
 [kafkaStreams]: https://kafka.apache.org/documentation/streams/

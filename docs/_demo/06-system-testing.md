@@ -22,12 +22,6 @@ generated from the `api` module's `@GeneratesSchema`-annotated types to be regis
 under test starts. No further configuration is required.
 {: .notice--info}
 
-Before any service under test is started, Creek creates the resources those services own, for example Kafka topics
-and their JSON schemas, and then produces any configured seed data to them. Only once that's done are the services
-under test started. This ordering matters: it means a service can rely on the topics, and schemas, it owns already
-existing by the time it starts, and it's the only way to get seed records into a topic that a service both owns and
-consumes from before that service itself starts and could otherwise produce to it.
-
 The service Docker images used in the system tests are the very same images that will be deployed through to Production.
 By testing the actual Docker images, and assuming good test coverage, confidence can be very high that the services does what's required.
 

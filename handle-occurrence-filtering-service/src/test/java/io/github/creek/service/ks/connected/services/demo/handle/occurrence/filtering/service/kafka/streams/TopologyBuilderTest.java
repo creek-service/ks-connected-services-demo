@@ -47,6 +47,7 @@ class TopologyBuilderTest {
 
     @BeforeAll
     public static void classSetup() {
+        // begin-snippet: classSetup
         ctx =
                 CreekServices.builder(new HandleOccurrenceFilteringServiceDescriptor())
                         .with(KafkaStreamsExtensionOptions.testBuilder().build())
@@ -69,6 +70,7 @@ class TopologyBuilderTest {
                                                 new MockEndpointsLoader() {})
                                         .build())
                         .build();
+        // end-snippet
     }
 
     @BeforeEach
