@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-package io.github.creek.service.ks.connected.services.demo.example.streams;
+package io.github.creek.service.ks.connected.services.demo.handle.occurrence.filtering.service.kafka.streams;
 
-import static org.apache.kafka.streams.KeyValue.pair;
 import static org.creekservice.api.kafka.metadata.topic.KafkaTopicDescriptor.DEFAULT_CLUSTER_NAME;
-import static org.creekservice.api.kafka.streams.test.TestTopics.inputTopic;
-import static org.creekservice.api.kafka.streams.test.TestTopics.outputTopic;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 
-import io.github.creek.service.ks.connected.services.demo.example.service.kafka.streams.TopologyBuilder;
-import io.github.creek.service.ks.connected.services.demo.services.ExampleServiceDescriptor;
-import org.apache.kafka.streams.TestInputTopic;
-import org.apache.kafka.streams.TestOutputTopic;
+import io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceFilteringServiceDescriptor;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.TopologyTestDriver;
+import org.creekservice.api.kafka.serde.json.JsonSerdeExtensionOptions;
+import org.creekservice.api.kafka.serde.json.schema.store.client.JsonSchemaStoreClient;
+import org.creekservice.api.kafka.serde.json.schema.store.client.MockJsonSchemaStoreClient;
+import org.creekservice.api.kafka.serde.schema.store.endpoint.MockEndpointsLoader;
+import org.creekservice.api.kafka.serde.schema.store.endpoint.SchemaStoreEndpoints;
 import org.creekservice.api.kafka.streams.extension.KafkaStreamsExtension;
-import org.creekservice.api.kafka.streams.test.TestKafkaStreamsExtensionOptions;
+import org.creekservice.api.kafka.streams.extension.KafkaStreamsExtensionOptions;
 import org.creekservice.api.service.context.CreekContext;
 import org.creekservice.api.service.context.CreekServices;
 import org.creekservice.api.test.util.TestPaths;
@@ -50,8 +48,26 @@ class TopologyBuilderTest {
     @BeforeAll
     public static void classSetup() {
         ctx =
-                CreekServices.builder(new ExampleServiceDescriptor())
-                        .with(TestKafkaStreamsExtensionOptions.defaults())
+                CreekServices.builder(new HandleOccurrenceFilteringServiceDescriptor())
+                        .with(KafkaStreamsExtensionOptions.testBuilder().build())
+                        // Required when using JSON serialization for topic values/keys.
+                        // This service's input topic is owned, and hence has its schema
+                        // registered, by handle-occurrence-service, not by this service. As this
+                        // test only instantiates this service's own descriptor, the default
+                        // JsonSerdeExtensionOptions.testBuilder() mock - which requires a schema
+                        // to have already been registered before it can be looked up - would fail
+                        // to find it. MockJsonSchemaStoreClient is a permissive mock, designed for
+                        // exactly this: testing consumers of a schema they don't own.
+                        .with(
+                                JsonSerdeExtensionOptions.builder()
+                                        .withTypeOverride(
+                                                JsonSchemaStoreClient.Factory.class,
+                                                (schemaRegistryName, endpoints) ->
+                                                        new MockJsonSchemaStoreClient() {})
+                                        .withTypeOverride(
+                                                SchemaStoreEndpoints.Loader.class,
+                                                new MockEndpointsLoader() {})
+                                        .build())
                         .build();
     }
 
@@ -67,7 +83,6 @@ class TopologyBuilderTest {
     public void tearDown() {
         testDriver.close();
     }
-
 
     /**
      * A test that intentionally fails when ever the topology changes.
@@ -90,7 +105,7 @@ class TopologyBuilderTest {
         // Given:
         final String expectedTopology =
                 TestPaths.readString(
-                        TestPaths.moduleRoot("example-service")
+                        TestPaths.moduleRoot("handle-occurrence-filtering-service")
                                 .resolve("src/test/resources/kafka/streams/expected_topology.txt"));
 
         // When:

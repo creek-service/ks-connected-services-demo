@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.creek.service.ks.connected.services.demo.service.kafka.streams;
+package io.github.creek.service.ks.connected.services.demo.handle.occurrence.service.kafka.streams;
 
 import static io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceServiceDescriptor.TweetHandleUsageStream;
 import static io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceServiceDescriptor.TweetTextStream;
