@@ -27,9 +27,6 @@ dependencies {
     // Install the creek-kafka system-test extension:
     systemTestExtension("org.creekservice:creek-kafka-test-extension:${property("creekVersion")}")
 
-    // Install the creek-kafka JSON serde system-test extension. This causes a Schema Registry
-    // container to be started automatically for system-test runs, and schemas to be registered
-    // against it before services under test start:
     systemTestExtension("org.creekservice:creek-kafka-json-serde:${property("creekVersion")}")
 }
 

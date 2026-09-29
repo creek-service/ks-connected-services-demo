@@ -68,10 +68,7 @@ class TopologyBuilderTest {
         // Initialise Creek in 'test mode':
         ctx =
                 CreekServices.builder(new HandleOccurrenceServiceDescriptor())
-                        // configure creek to work with mocks for Kafka Streams.
                         .with(KafkaStreamsExtensionOptions.testBuilder().build())
-                        // Required when using JSON serialization for topic values/keys.
-                        // Registers JSON serializers/deserializers with the test framework.
                         .with(JsonSerdeExtensionOptions.testBuilder().build())
                         .build();
     }

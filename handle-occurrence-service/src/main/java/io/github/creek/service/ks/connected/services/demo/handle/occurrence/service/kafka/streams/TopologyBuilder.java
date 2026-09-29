@@ -69,7 +69,6 @@ public final class TopologyBuilder {
                         Produced.with(output.keySerde(), output.valueSerde())
                                 .withName(name.name("egress-" + output.name())));
 
-        // Grab the cluster properties from Creek to build and return the Topology:
         return builder.build(ext.properties(DEFAULT_CLUSTER_NAME));
     }
 

@@ -51,14 +51,6 @@ class TopologyBuilderTest {
         ctx =
                 CreekServices.builder(new HandleOccurrenceFilteringServiceDescriptor())
                         .with(KafkaStreamsExtensionOptions.testBuilder().build())
-                        // Required when using JSON serialization for topic values/keys.
-                        // This service's input topic is owned, and hence has its schema
-                        // registered, by handle-occurrence-service, not by this service. As this
-                        // test only instantiates this service's own descriptor, the default
-                        // JsonSerdeExtensionOptions.testBuilder() mock - which requires a schema
-                        // to have already been registered before it can be looked up - would fail
-                        // to find it. MockJsonSchemaStoreClient is a permissive mock, designed for
-                        // exactly this: testing consumers of a schema they don't own.
                         .with(
                                 JsonSerdeExtensionOptions.builder()
                                         .withTypeOverride(
