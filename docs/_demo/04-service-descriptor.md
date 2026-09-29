@@ -26,8 +26,8 @@ is annotated with [`@GeneratesSchema`][generatesSchema]:
 {% include_snippet handle-usage from ../api/src/main/java/io/github/creek/service/ks/connected/services/demo/api/model/HandleUsage.java %}
 {% endhighlight %}
 
-**ProTip:** Keep validation of invariants in the type's constructor, e.g. a compact constructor on a `record`. This is
-the validation the generated JSON schema is checked for consistency against.
+**ProTip:** Replicating the schema's invariants in the type's constructor to ensure bad data is detected at
+construction time, rather than serialisation time.
 {: .notice--info}
 
 The `api` module's `build.gradle.kts` applies the `org.creekservice.schema.json` Gradle plugin, which adds the
