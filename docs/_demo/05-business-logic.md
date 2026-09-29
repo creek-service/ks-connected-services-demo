@@ -70,23 +70,13 @@ unintentional changes to the topology. Unintentional changes could introduce the
 deployed.
 
 The test compares the topology with the last know topology and fails if they differ.
-If the change is intentional, then the `handle-occurrence-filtering-service/src/test/resources/kafka/streams/expected_topology.txt`
-file can be updated to reflect the latest topology.
+If the change is intentional, then the `expected_topology.txt` file can be regenerated to reflect
+the latest topology by running the test class's `main` method.
 
-For this tutorial, update the `expected_topology.txt` file to match the new filter topology,
-so the guard stays in place:
-
-```text
-Topologies:
-   Sub-topology: 0
-    Source: ingest-twitter.handle.usage (topics: [twitter.handle.usage])
-      --> filter-out-non-presidents
-    Processor: filter-out-non-presidents (stores: [])
-      --> egress-twitter.handle.usage.presidents
-      <-- ingest-twitter.handle.usage
-    Sink: egress-twitter.handle.usage.presidents (topic: twitter.handle.usage.presidents)
-      <-- filter-out-non-presidents
-```
+For this tutorial, run `TopologyBuilderTest.main` to regenerate the
+`handle-occurrence-filtering-service/src/test/resources/kafka/streams/expected_topology.txt`
+file to match the new filter topology, then review the diff before committing, so the guard stays
+in place.
 
 Because the topics carry a schema-validated JSON value, the test's Creek setup needs JSON serde
 options alongside the existing Kafka Streams ones. Unlike the first service, this service only

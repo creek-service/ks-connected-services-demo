@@ -99,6 +99,9 @@ class TopologyBuilderTest {
      * </ol>
      *
      * <p>Option #1 allows for the simplest deployment, but is not always possible or desirable.
+     *
+     * <p>If the change is intentional, run this class's {@code main} method to regenerate {@code
+     * expected_topology.txt}, then review the diff before committing.
      */
     @Test
     void shouldNotChangeTheTopologyUnintentionally() {
@@ -113,5 +116,24 @@ class TopologyBuilderTest {
 
         // Then:
         assertThat(currentTopology.trim(), is(expectedTopology.trim()));
+    }
+
+    /**
+     * Regenerates {@code expected_topology.txt} to match the current topology.
+     *
+     * <p>Run this after an intentional topology change, then review the diff before committing.
+     */
+    public static void main(final String... args) {
+        classSetup();
+        final TopologyBuilderTest test = new TopologyBuilderTest();
+        test.setUp();
+        try {
+            TestPaths.write(
+                    TestPaths.moduleRoot("handle-occurrence-filtering-service")
+                            .resolve("src/test/resources/kafka/streams/expected_topology.txt"),
+                    test.topology.describe().toString());
+        } finally {
+            test.tearDown();
+        }
     }
 }
