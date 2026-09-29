@@ -17,7 +17,7 @@
 package io.github.creek.service.ks.connected.services.demo.services;
 
 import static io.github.creek.service.ks.connected.services.demo.internal.TopicConfigBuilder.withPartitions;
-import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.outputTopicWithJsonValue;
+import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.outputTopic;
 
 import io.github.creek.service.ks.connected.services.demo.api.model.HandleUsage;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public final class HandleOccurrenceFilteringServiceDescriptor implements Service
     // 2. Define the filtered output topic, conceptually owned by this service. This creates a
     //    second, independently-owned JSON schema for the same HandleUsage type:
     public static final OwnedKafkaTopicOutput<String, HandleUsage> HandleUsagePresidentsStream =
-            register(outputTopicWithJsonValue(
+            register(outputTopic(
                     "twitter.handle.usage.presidents",
                     HandleUsageStream.key().type(),
                     HandleUsageStream.value().type(),

@@ -17,8 +17,9 @@
 package io.github.creek.service.ks.connected.services.demo.services;
 
 import static io.github.creek.service.ks.connected.services.demo.internal.TopicConfigBuilder.withPartitions;
+import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.KAFKA_FORMAT;
 import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.inputTopic;
-import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.outputTopicWithJsonValue;
+import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.outputTopic;
 
 import io.github.creek.service.ks.connected.services.demo.api.model.HandleUsage;
 import java.time.Duration;
@@ -43,14 +44,16 @@ public final class HandleOccurrenceServiceDescriptor implements ServiceDescripto
                     inputTopic(
                             "twitter.tweet.text", // Topic name
                             Long.class, // Topic key: Tweet id
+                            KAFKA_FORMAT,
                             String.class, // Topic value: Tweet text
+                            KAFKA_FORMAT,
                             withPartitions(5))); // Topic config
 
     // Define the output topic, again conceptually owned by this service. The value is JSON,
     // schema-validated against the generated schema for HandleUsage:
     public static final OwnedKafkaTopicOutput<String, HandleUsage> TweetHandleUsageStream =
             register(
-                    outputTopicWithJsonValue(
+                    outputTopic(
                             "twitter.handle.usage",
                             String.class, // Twitter handle
                             HandleUsage.class, // Usage count

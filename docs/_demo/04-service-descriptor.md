@@ -81,7 +81,7 @@ Add the following to the class to declare the service's input and output topics:
 Importantly, note how this descriptor's `HandleUsageStream` topic descriptor, (step #1 in the code above), 
 is created by calling `toInput()` on the `HandleOccurrenceServiceDescriptor`'s `TweetHandleUsageStream` output topic descriptor.
 Compare this to the explicit declaration of the `TweetHandleUsagePresidentsStream` output topic, (step #2 in the code above),
-which declares a new, previously unseen, topic, using `outputTopicWithJsonValue(...)`.
+which declares a new, previously unseen, topic, using `outputTopic(...)`.
 
 The `toInput()` method, called in step #1, returns an _unowned_ input topic descriptor, with the correct name and types.
 Whereas, the output topic descriptor, created in step #2, is an _owned_ topic descriptor, _owned_
@@ -103,9 +103,9 @@ the topic's key and value types by referencing the input topic's key and value t
 This is just a convenient & type-safe way of ensuring the key and value types of these two topics align, given
 that the output topic is simply a filtered view of the input topic.
 
-Notice that `outputTopicWithJsonValue(...)` is used, rather than `outputTopic(...)`, to declare that the topic's value
-is a schema-validated JSON payload rather than a value serialized using Kafka's native serialization.
-The corresponding `inputTopicWithJsonValue(...)` method exists for declaring JSON-valued input topics.
+`outputTopic(...)` defaults to a schema-validated JSON value and a Kafka-native key.
+For a Kafka-native value instead, use the overload accepting explicit key and value formats,
+as the occurrence service does for its `twitter.tweet.text` input topic.
 
 **ProTip:** _Ownership_ applies to a topic's JSON schema too, and it follows the ownership of the topic, not of the
 Java type used as the value. `HandleUsageStream`, (step #1 above), is an _unowned_ input, so its JSON schema is
