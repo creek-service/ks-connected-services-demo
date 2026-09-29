@@ -65,7 +65,7 @@ Add the following to the class to declare the service's input and output topics:
 
 Importantly, note how this descriptor's `HandleUsageStream` topic descriptor, (step #1 in the code above), 
 is created by calling `toInput()` on the `HandleOccurrenceServiceDescriptor`'s `TweetHandleUsageStream` output topic descriptor.
-Compare this to the explicit declaration of the `TweetHandleUsagePresidentsStream` output topic, (step #2 in the code above),
+Compare this to the explicit declaration of the `HandleUsagePresidentsStream` output topic, (step #2 in the code above),
 which declares a new, previously unseen, topic, using `outputTopic(...)`.
 
 The `toInput()` method, called in step #1, returns an _unowned_ input topic descriptor, with the correct name and types.
@@ -80,7 +80,7 @@ In this case, by declaring the filter services input by calling `toInput()` on t
 we're declaring the filter service as a _downstream_ consumer of the occurrence service.
 
 Conversely, though less common, service's can define _owned_ input topics. In such a situation, _upstream_ services
-can declare that they _produce_ to the topic by calling `toOuput()` on the input topic descriptor when
+can declare that they _produce_ to the topic by calling `toOutput()` on the input topic descriptor when
 declaring their own output topic descriptor.
 
 The eagle-eyed of you may also have noticed that the service's output topic, (step #2 in the code above), declares
