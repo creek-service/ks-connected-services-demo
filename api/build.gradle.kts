@@ -13,7 +13,6 @@ dependencies {
 
     compileOnly("com.github.spotbugs:spotbugs-annotations:${property("spotBugsVersion")}")
 
-    // The module descriptor's `requires static` needs this resolvable when compiling the test module patch too.
     testCompileOnly("io.swagger.core.v3:swagger-annotations:${property("swaggerAnnotationsVersion")}")
     testImplementation("org.apache.kafka:kafka-clients:${property("kafkaVersion")}")
 
