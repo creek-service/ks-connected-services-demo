@@ -14,9 +14,12 @@ module ks.connected.services.demo.api {
             ks.connected.services.demo.services,
             ks.connected.services.demo.handle.occurrence.service;
 
+    // begin-snippet: opens-jackson
     // Required so Jackson (used by the JSON serde) can reflectively access the record's canonical
     // constructor and component accessors at runtime.
     opens io.github.creek.service.ks.connected.services.demo.api.model;
+
+    // end-snippet
 
     provides ComponentDescriptor with
             KsConnectedServicesDemoAggregateDescriptor;

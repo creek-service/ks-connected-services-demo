@@ -45,11 +45,9 @@ Finally, the JSON serde used at runtime is backed by [Jackson][jackson], which n
 canonical constructor and component accessors. As the `api` module is a JPMS module, this access must be explicitly
 granted in its `module-info.java`:
 
-```java
-// Required so Jackson (used by the JSON serde) can reflectively access the record's canonical
-// constructor and component accessors at runtime.
-opens io.github.creek.service.ks.connected.services.demo.api.model;
-```
+{% highlight java %}
+{% include_snippet opens-jackson from ../api/src/main/java/module-info.java %}
+{% endhighlight %}
 
 ## Define the topic resources
 
@@ -98,7 +96,7 @@ The occurrence service's `twitter.tweet.text` input already uses a JSON `TweetDa
 Java type used as the value. `HandleUsageStream`, (step #1 above), is an _unowned_ input, so its JSON schema is
 tracked as _unowned_ too: it remains owned by the `handle-occurrence-service`, which owns the topic it's derived
 from. `HandleUsagePresidentsStream`, (step #2 above), is a new, _owned_, output, so even though it reuses the same
-`HandleUsage` Java type, it gets its own, independently owned, JSON schema.
+`HandleUsage` Java type, it gets its own, independently owned, JSON schema, which can be evolved independently.
 {: .notice--info}
 
 [creekExts]: https://www.creekservice.org/extensions/
