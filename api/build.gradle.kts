@@ -6,8 +6,6 @@ plugins {
 dependencies {
     api("org.creekservice:creek-kafka-metadata:${property("creekVersion")}")
     implementation("org.creekservice:creek-base-annotation:${property("creekVersion")}")
-    // Used to control the fidelity of generated JSON schemas, e.g. marking non-primitive
-    // record components as required:
     api("com.fasterxml.jackson.core:jackson-annotations:${property("jacksonAnnotationsVersion")}")
     compileOnlyApi("io.swagger.core.v3:swagger-annotations:${property("swaggerAnnotationsVersion")}")
 
