@@ -23,7 +23,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.creekservice.api.base.annotation.schema.GeneratesSchema;
 
 // begin-snippet: handle-usage
-/** The number of times a Twitter handle has been mentioned. */
 @GeneratesSchema
 public record HandleUsage(
         @JsonProperty(value = "handle", required = true) @Schema(minLength = 1) String handle,
