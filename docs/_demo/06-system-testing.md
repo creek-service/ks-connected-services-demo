@@ -44,18 +44,14 @@ with fewer tests per suite.
 
 ### Define more test inputs
 
-The previous tutorial seeded two tweets before the service started. This two-service suite
-checks records produced *after both services start*, so move those two records from
-`system-tests/src/system-test/example-suite/seed/twitter.tweet.text.yml` into the existing
-`inputs/twitter.tweet.text.yml` and remove the seed file. Keep the `TweetData` JSON object values
-from the previous tutorial. The resulting input file is:
+Keep the two tweets from the previous tutorial in
+`system-tests/src/system-test/example-suite/seed/twitter.tweet.text.yml`. They are sent before
+either service starts, and their resulting output is included in the test expectations.
+The existing input file remains:
 
 {% highlight yaml %}
 {% include_snippet all from ../system-tests/src/system-test/example-suite/inputs/twitter.tweet.text.yml %}
 {% endhighlight %}
-
-The original seed-data scenario remains covered by the completed basic demo. Here we want the
-combined test to observe those records alongside the new service's output.
 
 One approach would be to add new records to the existing `twitter.tweet.text.yml` input file.
 A potentially more flexible approach, especially if the existing input file was re-used in several test cases already,
@@ -189,4 +185,3 @@ This completes the tutorial. See the next page for suggested next steps.
 [kafkaOptions]: https://www.creekservice.org/creek-kafka/#option-model-extensions
 [basicTutorialSysTest]: {{ site.url | append: "/basic-kafka-streams-demo/system-testing" }}
 [todo]: switch about links to proper creekservice.org links once each repo publishes docs. 
-
