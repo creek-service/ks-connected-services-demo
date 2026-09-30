@@ -26,6 +26,7 @@ import static org.hamcrest.Matchers.is;
 
 import io.github.creek.service.ks.connected.services.demo.example.service.kafka.streams.TopologyBuilder;
 import io.github.creek.service.ks.connected.services.demo.services.ExampleServiceDescriptor;
+import java.nio.file.Path;
 import org.apache.kafka.streams.TestInputTopic;
 import org.apache.kafka.streams.TestOutputTopic;
 import org.apache.kafka.streams.Topology;
@@ -41,6 +42,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class TopologyBuilderTest {
+
+    private static final Path EXPECTED_TOPOLOGY_PATH =
+            TestPaths.moduleRoot("example-service")
+                    .resolve("src/test/resources/kafka/streams/expected_topology.txt");
 
     private static CreekContext ctx;
 
@@ -91,10 +96,7 @@ class TopologyBuilderTest {
     @Test
     void shouldNotChangeTheTopologyUnintentionally() {
         // Given:
-        final String expectedTopology =
-                TestPaths.readString(
-                        TestPaths.moduleRoot("example-service")
-                                .resolve("src/test/resources/kafka/streams/expected_topology.txt"));
+        final String expectedTopology = TestPaths.readString(EXPECTED_TOPOLOGY_PATH);
 
         // When:
         final String currentTopology = topology.describe().toString();
@@ -113,10 +115,7 @@ class TopologyBuilderTest {
         final TopologyBuilderTest test = new TopologyBuilderTest();
         test.setUp();
         try {
-            TestPaths.write(
-                    TestPaths.moduleRoot("example-service")
-                            .resolve("src/test/resources/kafka/streams/expected_topology.txt"),
-                    test.topology.describe().toString());
+            TestPaths.write(EXPECTED_TOPOLOGY_PATH, test.topology.describe().toString());
         } finally {
             test.tearDown();
         }
