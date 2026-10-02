@@ -13,7 +13,8 @@ As this is not the focus of this tutorial, this logic is kept deliberately trivi
 it will filter the input topic, and produce the resulting records to the service's output topic.
 The filter will exclude any records with Twitter handles not in a hardcoded list of accounts linked to presidents of the USA. 
 
-As a reminder, the input records store the Twitter handle in the record's key and the number of occurrences in the record's value. 
+As a reminder, the input records store the Twitter handle in the record's key and a `HandleUsage(String handle, int count)`
+JSON value, containing the handle and the number of occurrences, in the record's value.
 The service's output topic will follow the same schema.
 
 ## Define the stream topology
@@ -69,10 +70,23 @@ unintentional changes to the topology. Unintentional changes could introduce the
 deployed.
 
 The test compares the topology with the last know topology and fails if they differ.
-If the change is intentional, then the `handle-occurrence-filtering-service/src/test/resources/kafka/streams/expected_topology.txt`
-file can be updated to reflect the latest topology.
+If the change is intentional, then the `expected_topology.txt` file can be regenerated to reflect
+the latest topology by running the test class's `main` method.
 
-For this tutorial, the test can simple be disabled or deleted.
+For this tutorial, run `TopologyBuilderTest.main` to regenerate the
+`handle-occurrence-filtering-service/src/test/resources/kafka/streams/expected_topology.txt`
+file to match the new filter topology, then review the diff before committing, so the guard stays
+in place.
+
+Because the topics carry a schema-validated JSON value, the test's Creek setup needs JSON serde
+options alongside the existing Kafka Streams ones. Unlike the first service, this service only
+*consumes* its input schema; its descriptor does not register that schema as owned. The default
+JSON test builder therefore cannot look up the input schema when testing this descriptor alone.
+Use the permissive `MockJsonSchemaStoreClient` with `MockEndpointsLoader` instead:
+
+{% highlight java %}
+{% include_snippet classSetup from ../handle-occurrence-filtering-service/src/test/java/io/github/creek/service/ks/connected/services/demo/handle/occurrence/filtering/service/kafka/streams/TopologyBuilderTest.java %}
+{% endhighlight %}
 
 [nameJavaDocs]: https://javadoc.io/doc/org.creekservice/creek-kafka-streams-extension/latest/creek.kafka.streams.extension/org/creekservice/api/kafka/streams/extension/util/Name.html
 [kafkaStreams]: https://kafka.apache.org/documentation/streams/
