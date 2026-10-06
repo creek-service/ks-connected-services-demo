@@ -49,12 +49,6 @@ java {
 
 repositories {
     mavenCentral()
-    mavenLocal()
-    maven {
-        // Required to resolve Creek's `0.5.0-SNAPSHOT` artifacts while it's not yet released.
-        // Remove once Creek `0.5.0` is released.
-        url = uri("https://central.sonatype.com/repository/maven-snapshots/")
-    }
     // Required for Confluent Schema Registry and JSON Schema Provider dependencies
     // used by Creek's JSON serialization support (kafka-json-serde module).
     maven {
