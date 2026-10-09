@@ -1,13 +1,25 @@
+// begin-snippet: all
 plugins {
     `java-library`
+    id("org.creekservice.schema.json")
 }
 
 dependencies {
     api("org.creekservice:creek-kafka-metadata:${property("creekVersion")}")
+    implementation("org.creekservice:creek-base-annotation:${property("creekVersion")}")
+    api("com.fasterxml.jackson.core:jackson-annotations:${property("jacksonAnnotationsVersion")}")
+    compileOnlyApi("io.swagger.core.v3:swagger-annotations:${property("swaggerAnnotationsVersion")}")
 
     compileOnly("com.github.spotbugs:spotbugs-annotations:${property("spotBugsVersion")}")
 
-    // To avoid dependency hell downstream, avoid adding any more dependencies except Creek metadata jars and test dependencies.
-
+    testCompileOnly("io.swagger.core.v3:swagger-annotations:${property("swaggerAnnotationsVersion")}")
     testImplementation("org.apache.kafka:kafka-clients:${property("kafkaVersion")}")
+
+    jsonSchemaGenerator("org.creekservice:creek-json-schema-generator:${property("creekVersion")}")
 }
+
+creek.schema.json {
+    typeScanning.moduleWhiteList(moduleName)
+    subTypeScanning.moduleWhiteList(moduleName)
+}
+// end-snippet

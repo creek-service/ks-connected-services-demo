@@ -7,7 +7,7 @@ layout: single
 
 This tutorial builds on the [Basic Kafka Streams demo](/basic-kafka-streams-demo/). 
 If you have completed the previous demo you can use that repository for working through this tutorial: 
-skip to the [nex step]({{ "/add-service" | relative_url }}).
+skip to the [next step]({{ "/add-service" | relative_url }}).
 Otherwise, follow the steps below to create your own copy of the completed tutorial:
 
 ## Create your own copy of the previous demo

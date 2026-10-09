@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 Creek Contributors (https://github.com/creek-service)
+ * Copyright 2022-2026 Creek Contributors (https://github.com/creek-service)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import static io.github.creek.service.ks.connected.services.demo.services.Handle
 import static java.util.Objects.requireNonNull;
 import static org.creekservice.api.kafka.metadata.topic.KafkaTopicDescriptor.DEFAULT_CLUSTER_NAME;
 
+import io.github.creek.service.ks.connected.services.demo.api.model.HandleUsage;
 import java.util.Set;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
@@ -45,8 +46,8 @@ public final class TopologyBuilder {
 
         // Pass a topic descriptor to the Kafka Streams extension to
         // obtain a typed `KafkaTopic` instance, which provides access to serde:
-        final KafkaTopic<String, Integer> input = ext.topic(HandleUsageStream);
-        final KafkaTopic<String, Integer> output = ext.topic(HandleUsagePresidentsStream);
+        final KafkaTopic<String, HandleUsage> input = ext.topic(HandleUsageStream);
+        final KafkaTopic<String, HandleUsage> output = ext.topic(HandleUsagePresidentsStream);
 
         // Build a simple topology:
         // Consume input topic:
@@ -72,7 +73,7 @@ public final class TopologyBuilder {
     private static final Set<String> PRESIDENT_HANDLES =
             Set.of("@POTUS", "@JoeBiden", "@realDonaldTrump", "@BarackObama");
 
-    private boolean presidentsOnly(final String twitterHandle, final Object ignored) {
+    private boolean presidentsOnly(final String twitterHandle, final HandleUsage ignored) {
         return PRESIDENT_HANDLES.contains(twitterHandle);
     }
     // end-snippet
