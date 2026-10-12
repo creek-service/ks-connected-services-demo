@@ -20,22 +20,17 @@ import static io.github.creek.service.ks.connected.services.demo.internal.TopicC
 import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.outputTopic;
 
 import io.github.creek.service.ks.connected.services.demo.services.model.HandleUsage;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.creekservice.api.kafka.metadata.topic.KafkaTopicInput;
 import org.creekservice.api.kafka.metadata.topic.OwnedKafkaTopicOutput;
 import org.creekservice.api.platform.metadata.ComponentInput;
-import org.creekservice.api.platform.metadata.ComponentInternal;
 import org.creekservice.api.platform.metadata.ComponentOutput;
 import org.creekservice.api.platform.metadata.ServiceDescriptor;
 
 // begin-snippet: class-name
 public final class HandleOccurrenceFilteringServiceDescriptor implements ServiceDescriptor {
     // end-snippet
-    private static final List<ComponentInput> INPUTS = new ArrayList<>();
-    private static final List<ComponentInternal> INTERNALS = new ArrayList<>();
-    private static final List<ComponentOutput> OUTPUTS = new ArrayList<>();
 
     // formatting:off
 // begin-snippet: topic-resources
@@ -43,18 +38,18 @@ public final class HandleOccurrenceFilteringServiceDescriptor implements Service
     //    The JSON schema for the value remains owned by handle-occurrence-service, the service
     //    that owns the topic - it is only unowned from this service's point of view:
     public static final KafkaTopicInput<String, HandleUsage> HandleUsageStream =
-            register(HandleOccurrenceServiceDescriptor.TweetHandleUsageStream.toInput());
+            HandleOccurrenceServiceDescriptor.TweetHandleUsageStream.toInput();
 
     // 2. Define the filtered output topic, conceptually owned by this service. This creates a
     //    second, independently-owned JSON schema for the same HandleUsage type:
     public static final OwnedKafkaTopicOutput<String, HandleUsage> HandleUsagePresidentsStream =
-            register(outputTopic(
-                    "twitter.handle.usage.presidents",
-                    HandleUsageStream.key().type(),
-                    HandleUsageStream.key().format(),
-                    HandleUsageStream.value().type(),
-                    HandleUsageStream.value().format(),
-                    withPartitions(3)));
+            outputTopic(
+                "twitter.handle.usage.presidents",
+                HandleUsageStream.key().type(),
+                HandleUsageStream.key().format(),
+                HandleUsageStream.value().type(),
+                HandleUsageStream.value().format(),
+                withPartitions(3));
 // end-snippet
     // formatting:on
 
@@ -67,32 +62,11 @@ public final class HandleOccurrenceFilteringServiceDescriptor implements Service
 
     @Override
     public Collection<ComponentInput> inputs() {
-        return List.copyOf(INPUTS);
-    }
-
-    @Override
-    public Collection<ComponentInternal> internals() {
-        return List.copyOf(INTERNALS);
+        return List.of(HandleUsageStream);
     }
 
     @Override
     public Collection<ComponentOutput> outputs() {
-        return List.copyOf(OUTPUTS);
-    }
-
-    private static <T extends ComponentInput> T register(final T input) {
-        INPUTS.add(input);
-        return input;
-    }
-
-    // Uncomment if needed:
-    // private static <T extends ComponentInternal> T register(final T internal) {
-    //     INTERNALS.add(internal);
-    //     return internal;
-    // }
-
-    private static <T extends ComponentOutput> T register(final T output) {
-        OUTPUTS.add(output);
-        return output;
+        return List.of(HandleUsagePresidentsStream);
     }
 }
