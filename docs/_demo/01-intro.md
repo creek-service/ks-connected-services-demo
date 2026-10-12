@@ -15,7 +15,8 @@ microservice that consumes the output of the first.
 
 The first service, added in the [previous tutorial](/basic-kafka-streams-demo/), detected the use of Twitter
 handles, e.g. `@elonmusk`, in Tweets. Twitter handle occurrences were output to the `twitter.handle.usage` Kafka topic.
-Records on this topic have the Twitter handle in their key and the number of concurrences in the value.
+Records on this topic have the Twitter handle in their key and a JSON value, containing the handle and the number of
+occurrences, that's validated against a schema registered in a Schema Registry.
 
 This tutorial will add a new filtering service. This new service will consume the output topic of the existing service,
 and filter out any handles not associated with a hard-coded list of USA presidents.

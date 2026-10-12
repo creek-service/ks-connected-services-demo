@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Creek Contributors (https://github.com/creek-service)
+ * Copyright 2021-2026 Creek Contributors (https://github.com/creek-service)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package io.github.creek.service.ks.connected.services.demo.service;
+package io.github.creek.service.ks.connected.services.demo.handle.occurrence.service;
 
-import io.github.creek.service.ks.connected.services.demo.service.kafka.streams.TopologyBuilder;
+import io.github.creek.service.ks.connected.services.demo.handle.occurrence.service.kafka.streams.TopologyBuilder;
 import io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceServiceDescriptor;
 import org.apache.kafka.streams.Topology;
 import org.creekservice.api.kafka.streams.extension.KafkaStreamsExtension;
@@ -30,16 +30,17 @@ public final class ServiceMain {
     private ServiceMain() {}
 
     public static void main(final String... args) {
-        final CreekContext ctx =
+        try (CreekContext ctx =
                 CreekServices.builder(new HandleOccurrenceServiceDescriptor())
                         .with(
                                 KafkaStreamsExtensionOptions.builder()
                                         // Customize the Kafka streams extension...
                                         .build())
-                        .build();
+                        .build()) {
 
-        final KafkaStreamsExtension ext = ctx.extension(KafkaStreamsExtension.class);
-        final Topology topology = new TopologyBuilder(ext).build();
-        ext.execute(topology);
+            final KafkaStreamsExtension ext = ctx.extension(KafkaStreamsExtension.class);
+            final Topology topology = new TopologyBuilder(ext).build();
+            ext.execute(topology);
+        }
     }
 }

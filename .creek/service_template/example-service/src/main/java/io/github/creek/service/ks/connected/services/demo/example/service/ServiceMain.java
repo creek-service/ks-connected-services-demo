@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2025 Creek Contributors (https://github.com/creek-service)
+ * Copyright 2021-2026 Creek Contributors (https://github.com/creek-service)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,16 +30,17 @@ public final class ServiceMain {
     private ServiceMain() {}
 
     public static void main(final String... args) {
-        final CreekContext ctx =
+        try (CreekContext ctx =
                 CreekServices.builder(new ExampleServiceDescriptor())
                         .with(
                                 KafkaStreamsExtensionOptions.builder()
                                         // Customize the Kafka streams extension here...
                                         .build())
-                        .build();
+                        .build()) {
 
-        final KafkaStreamsExtension ext = ctx.extension(KafkaStreamsExtension.class);
-        final Topology topology = new TopologyBuilder(ext).build();
-        ext.execute(topology);
+            final KafkaStreamsExtension ext = ctx.extension(KafkaStreamsExtension.class);
+            final Topology topology = new TopologyBuilder(ext).build();
+            ext.execute(topology);
+        }
     }
 }
