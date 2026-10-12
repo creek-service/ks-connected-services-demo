@@ -19,7 +19,7 @@ package io.github.creek.service.ks.connected.services.demo.services;
 import static io.github.creek.service.ks.connected.services.demo.internal.TopicConfigBuilder.withPartitions;
 import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.outputTopic;
 
-import io.github.creek.service.ks.connected.services.demo.api.model.HandleUsage;
+import io.github.creek.service.ks.connected.services.demo.services.model.HandleUsage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -51,7 +51,9 @@ public final class HandleOccurrenceFilteringServiceDescriptor implements Service
             register(outputTopic(
                     "twitter.handle.usage.presidents",
                     HandleUsageStream.key().type(),
+                    HandleUsageStream.key().format(),
                     HandleUsageStream.value().type(),
+                    HandleUsageStream.value().format(),
                     withPartitions(3)));
 // end-snippet
     // formatting:on

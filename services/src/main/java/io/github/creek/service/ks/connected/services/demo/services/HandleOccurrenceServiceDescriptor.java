@@ -19,11 +19,12 @@ package io.github.creek.service.ks.connected.services.demo.services;
 // formatting:off
 // begin-snippet: includes-1
 import static io.github.creek.service.ks.connected.services.demo.internal.TopicConfigBuilder.withPartitions;
+import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.KAFKA_FORMAT;
+import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.JSON_FORMAT;
 import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.inputTopic;
 import static io.github.creek.service.ks.connected.services.demo.internal.TopicDescriptors.outputTopic;
 // end-snippet
-import io.github.creek.service.ks.connected.services.demo.api.model.HandleUsage;
-import io.github.creek.service.ks.connected.services.demo.api.model.TweetData;
+import io.github.creek.service.ks.connected.services.demo.services.model.HandleUsage;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,12 +49,14 @@ public final class HandleOccurrenceServiceDescriptor implements ServiceDescripto
     // formatting:off
 // begin-snippet: topic-resources
     // Define the tweet-text input topic, conceptually owned by this service:
-    public static final OwnedKafkaTopicInput<Long, TweetData> TweetTextStream =
+    public static final OwnedKafkaTopicInput<Long, String> RawTweetStream =
             register(
                     inputTopic(
                             "twitter.tweet.text", // Topic name
                             Long.class, // Topic key: Tweet id (Kafka native)
-                            TweetData.class, // Topic value: Tweet data (JSON)
+                            KAFKA_FORMAT,
+                            String.class, // Topic value: Tweet text (Kafka native)
+                            KAFKA_FORMAT,
                             withPartitions(5))); // Topic config
 
     // Define the output topic, again conceptually owned by this service:
@@ -61,7 +64,9 @@ public final class HandleOccurrenceServiceDescriptor implements ServiceDescripto
             register(outputTopic(
                     "twitter.handle.usage",
                     String.class, // Twitter handle (Kafka native)
-                    HandleUsage.class,  // Usage data (JSON)
+                    KAFKA_FORMAT,
+                    HandleUsage.class,
+                    JSON_FORMAT,  // Usage data (JSON)
                     withPartitions(6)
                         .withRetentionTime(Duration.ofHours(12))
             ));

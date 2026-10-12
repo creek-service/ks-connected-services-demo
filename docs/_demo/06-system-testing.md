@@ -15,10 +15,10 @@ Creek [system-tests][systemTests] enable black-box testing of an aggregate's com
 Services are run, locally, in Docker containers. Test inputs and expected
 outputs are defined in YAML file, and Creek does the rest.
 
-**ProTip:** As topic values in this tutorial are schema-validated JSON payloads, the `system-tests` module installs
+**ProTip:** As the handle-usage output values in this tutorial are schema-validated JSON payloads, the `system-tests` module installs
 the `creek-kafka-json-serde` system-test extension, alongside the existing `creek-kafka-test-extension`. Doing so is
 enough for a Schema Registry container to be started automatically for system-test runs, and for the JSON schemas
-generated from the `api` module's `@GeneratesSchema`-annotated types to be registered against it, before any service
+generated from the `services` module's `@GeneratesSchema`-annotated type to be registered against it, before any service
 under test starts. No further configuration is required.
 {: .notice--info}
 

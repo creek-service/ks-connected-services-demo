@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.creek.service.ks.connected.services.demo.api.model;
+package io.github.creek.service.ks.connected.services.demo.services.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;

@@ -19,7 +19,7 @@ covers useful core Creek features not covered by this tutorial. For example:
 
 Additional tutorials will be added over time. These can be found on the [tutorials page]({{ site.url | append: "/tutorials/" }}).
 
-This tutorial reused the previous tutorial's schema-validated JSON payloads for topic values, alongside
+This tutorial reused the previous tutorial's schema-validated JSON payload for the handle-usage topic value, alongside
 natively serialized topic keys such as `String`. See the [JSON schema format section][kafkaJsonSchemaDocs] of the
 `creek-kafka` docs for more on the JSON serialization support used in this tutorial.
 {: .notice--info}

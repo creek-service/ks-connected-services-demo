@@ -15,38 +15,38 @@ This is one of the two key features of this tutorial. The other being [system te
 
 ## Define the JSON payload
 
-The previous tutorial already defined schema-validated JSON payloads for both `TweetData` (input) and
-`HandleUsage` (output). Keep those types and the first service's existing topic declarations: the new
-service will consume `HandleUsage` and produce a filtered view using the same payload type.
+The previous tutorial defined a Kafka-native `String` tweet-text input and a schema-validated JSON
+`HandleUsage` output. Keep the first service's existing topic declarations: the new service will
+consume `HandleUsage` and produce a filtered view using the same payload type.
 
-The `api` module defines the Java types used as topic values. Each type that should have a JSON schema generated for it
+The `services` module defines the Java types used by its services as topic values. Each type that should have a JSON schema generated for it
 is annotated with [`@GeneratesSchema`][generatesSchema]:
 
 {% highlight java %}
-{% include_snippet handle-usage from ../api/src/main/java/io/github/creek/service/ks/connected/services/demo/api/model/HandleUsage.java %}
+{% include_snippet handle-usage from ../services/src/main/java/io/github/creek/service/ks/connected/services/demo/services/model/HandleUsage.java %}
 {% endhighlight %}
 
 **ProTip:** Enforce the schema's constraints in the type's constructor too, so invalid data is rejected at
 construction time rather than serialisation time.
 {: .notice--info}
 
-The `api` module's `build.gradle.kts` applies the `org.creekservice.schema.json` Gradle plugin, which adds the
+The `services` module's `build.gradle.kts` applies the `org.creekservice.schema.json` Gradle plugin, which adds the
 `generateJsonSchema` task. This scans the module for `@GeneratesSchema`-annotated types and writes out a JSON schema
 for each:
 
 {% highlight kotlin %}
-{% include_snippet all from ../api/build.gradle.kts %}
+{% include_snippet all from ../services/build.gradle.kts %}
 {% endhighlight %}
 
-Restricting the class and module path scanning to the `api` module's own module name, as above, keeps schema
+Restricting the class and module path scanning to the `services` module's own module name, as above, keeps schema
 generation fast, by avoiding scanning the whole class path for annotated types.
 
 Finally, the JSON serde used at runtime is backed by [Jackson][jackson], which needs reflective access to a type's
-canonical constructor and component accessors. As the `api` module is a JPMS module, this access must be explicitly
+canonical constructor and component accessors. As the `services` module is a JPMS module, this access must be explicitly
 granted in its `module-info.java`:
 
 {% highlight java %}
-{% include_snippet opens-jackson from ../api/src/main/java/module-info.java %}
+{% include_snippet opens-jackson from ../services/src/main/java/module-info.java %}
 {% endhighlight %}
 
 ## Define the topic resources
@@ -84,13 +84,12 @@ can declare that they _produce_ to the topic by calling `toOutput()` on the inpu
 declaring their own output topic descriptor.
 
 The eagle-eyed of you may also have noticed that the service's output topic, (step #2 in the code above), declares
-the topic's key and value types by referencing the input topic's key and value types.
-This is just a convenient & type-safe way of ensuring the key and value types of these two topics align, given
+the topic's key and value types and formats by referencing those of the input topic.
+This is just a convenient & type-safe way of ensuring the key and value types and formats of these two topics align, given
 that the output topic is simply a filtered view of the input topic.
 
-`outputTopic(...)` defaults to a schema-validated JSON value and a Kafka-native key.
-For a Kafka-native value instead, use the overload accepting explicit key and value formats.
-The occurrence service's `twitter.tweet.text` input already uses a JSON `TweetData` value.
+`outputTopic(...)` explicitly uses the input topic's key and value types and formats.
+The occurrence service's `twitter.tweet.text` input carries a Kafka-native `String` value.
 
 **ProTip:** _Ownership_ applies to a topic's JSON schema too, and it follows the ownership of the topic, not of the
 Java type used as the value. `HandleUsageStream`, (step #1 above), is an _unowned_ input, so its JSON schema is

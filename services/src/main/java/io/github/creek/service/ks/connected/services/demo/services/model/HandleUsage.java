@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.creek.service.ks.connected.services.demo.api.model;
+package io.github.creek.service.ks.connected.services.demo.services.model;
 
 import static java.util.Objects.requireNonNull;
 
@@ -22,15 +22,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.creekservice.api.base.annotation.schema.GeneratesSchema;
 
-// begin-snippet: tweet-data
+// begin-snippet: handle-usage
 @GeneratesSchema
-public record TweetData(
-        long id, @JsonProperty(required = true) @Schema(minLength = 1) String text) {
+public record HandleUsage(
+        @JsonProperty(value = "handle", required = true) @Schema(minLength = 1) String handle,
+        @Schema(minimum = "1") int count) {
 
-    public TweetData {
-        requireNonNull(text, "text");
-        if (text.isEmpty()) {
-            throw new IllegalArgumentException("text cannot be empty");
+    public HandleUsage {
+        requireNonNull(handle, "handle");
+        if (handle.isEmpty()) {
+            throw new IllegalArgumentException("handle cannot be empty");
+        }
+        if (count <= 0) {
+            throw new IllegalArgumentException("count must be greater than zero");
         }
     }
 }

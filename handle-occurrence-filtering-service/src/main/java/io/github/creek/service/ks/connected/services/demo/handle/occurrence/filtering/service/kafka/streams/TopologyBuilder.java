@@ -21,7 +21,7 @@ import static io.github.creek.service.ks.connected.services.demo.services.Handle
 import static java.util.Objects.requireNonNull;
 import static org.creekservice.api.kafka.metadata.topic.KafkaTopicDescriptor.DEFAULT_CLUSTER_NAME;
 
-import io.github.creek.service.ks.connected.services.demo.api.model.HandleUsage;
+import io.github.creek.service.ks.connected.services.demo.services.model.HandleUsage;
 import java.util.Set;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
