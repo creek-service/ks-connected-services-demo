@@ -4,6 +4,9 @@ import org.creekservice.api.platform.metadata.ComponentDescriptor;
 module ks.connected.services.demo.api {
     requires transitive creek.kafka.metadata;
     requires static com.github.spotbugs.annotations;
+    requires static creek.base.annotation;
+    requires static com.fasterxml.jackson.annotation;
+    requires static io.swagger.v3.oas.annotations;
 
     exports io.github.creek.service.ks.connected.services.demo.api;
     exports io.github.creek.service.ks.connected.services.demo.internal to
