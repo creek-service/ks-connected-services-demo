@@ -15,13 +15,6 @@ Creek [system-tests][systemTests] enable black-box testing of an aggregate's com
 Services are run, locally, in Docker containers. Test inputs and expected
 outputs are defined in YAML file, and Creek does the rest.
 
-**ProTip:** As the handle-usage output values in this tutorial are schema-validated JSON payloads, the `system-tests` module installs
-the `creek-kafka-json-serde` system-test extension, alongside the existing `creek-kafka-test-extension`. Doing so is
-enough for a Schema Registry container to be started automatically for system-test runs, and for the JSON schemas
-generated from the `services` module's `@GeneratesSchema`-annotated type to be registered against it, before any service
-under test starts. No further configuration is required.
-{: .notice--info}
-
 The service Docker images used in the system tests are the very same images that will be deployed through to Production.
 By testing the actual Docker images, and assuming good test coverage, confidence can be very high that the services does what's required.
 
@@ -44,18 +37,9 @@ with fewer tests per suite.
 
 ### Define more test inputs
 
-Keep the two tweets from the previous tutorial in
-`system-tests/src/system-test/example-suite/seed/twitter.tweet.text.yml`. They are sent before
-either service starts, and their resulting output is included in the test expectations.
-The existing input file remains:
-
-{% highlight yaml %}
-{% include_snippet all from ../system-tests/src/system-test/example-suite/inputs/twitter.tweet.text.yml %}
-{% endhighlight %}
-
 One approach would be to add new records to the existing `twitter.tweet.text.yml` input file.
 A potentially more flexible approach, especially if the existing input file was re-used in several test cases already,
-would be to create a new input file containing only the USA president tweets. This allows finer grained control of
+would be to create a new input file containing only the USA president tweets. This allows finer-grained control of
 which test cases the new input is added to.
 
 Create a file at `system-tests/src/system-test/example-suite/inputs/tweets-with-presidents.yml` with the following content:

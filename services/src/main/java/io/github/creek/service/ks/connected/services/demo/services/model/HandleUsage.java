@@ -22,7 +22,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.creekservice.api.base.annotation.schema.GeneratesSchema;
 
-// begin-snippet: handle-usage
 @GeneratesSchema
 public record HandleUsage(
         @JsonProperty(value = "handle", required = true) @Schema(minLength = 1) String handle,
@@ -38,4 +37,3 @@ public record HandleUsage(
         }
     }
 }
-// end-snippet

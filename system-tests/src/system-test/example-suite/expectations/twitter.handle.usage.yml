@@ -1,4 +1,3 @@
-# begin-snippet: all
 ---
 !creek/kafka-topic@1
 topic: twitter.handle.usage
@@ -27,4 +26,3 @@ records:
     value:
       handle: "@teslaownersSV"
       count: 1
-# end-snippet

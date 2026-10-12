@@ -1,4 +1,3 @@
-// begin-snippet: all
 plugins {
     `java-library`
 }
@@ -11,5 +10,3 @@ dependencies {
     testImplementation("org.apache.kafka:kafka-clients:${property("kafkaVersion")}")
 
 }
-
-// end-snippet

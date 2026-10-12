@@ -45,7 +45,6 @@ public final class TopologyBuilder {
         this.ext = requireNonNull(ext, "ext");
     }
 
-    // begin-snippet: build-method
     public Topology build() {
         final StreamsBuilder builder = new StreamsBuilder();
 
@@ -71,9 +70,6 @@ public final class TopologyBuilder {
         return builder.build(ext.properties(DEFAULT_CLUSTER_NAME));
     }
 
-    // end-snippet
-
-    // begin-snippet: extract-method
     private static final Pattern TWEET_HANDLE = Pattern.compile("(?<handle>@[a-zA-Z0-9_]*)");
 
     private Iterable<KeyValue<String, HandleUsage>> extractHandles(
@@ -89,5 +85,4 @@ public final class TopologyBuilder {
                 .map(e -> KeyValue.pair(e.getKey(), new HandleUsage(e.getKey(), e.getValue())))
                 .collect(Collectors.toList());
     }
-    // end-snippet
 }
