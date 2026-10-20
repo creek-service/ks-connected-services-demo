@@ -33,7 +33,7 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
     runtimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion")
 
-    testImplementation("org.creekservice:creek-kafka-streams-test:$creekVersion")
+    testImplementation("org.apache.kafka:kafka-streams-test-utils:${property("kafkaVersion")}")
 }
 
 // Patch Kafka Streams test jar into main Kafka Streams module to avoid split packages:
@@ -74,4 +74,3 @@ tasks.register<DockerPushImage>("pushAppImage") {
     images.add("ghcr.io/creek-service/${rootProject.name}-${project.name}:latest")
     images.add("ghcr.io/creek-service/${rootProject.name}-${project.name}:${project.version}")
 }
-

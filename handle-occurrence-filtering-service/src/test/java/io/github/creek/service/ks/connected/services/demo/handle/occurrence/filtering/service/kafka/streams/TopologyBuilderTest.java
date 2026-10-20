@@ -25,10 +25,6 @@ import java.nio.file.Path;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.TopologyTestDriver;
 import org.creekservice.api.kafka.serde.json.JsonSerdeExtensionOptions;
-import org.creekservice.api.kafka.serde.json.schema.store.client.JsonSchemaStoreClient;
-import org.creekservice.api.kafka.serde.json.schema.store.client.MockJsonSchemaStoreClient;
-import org.creekservice.api.kafka.serde.schema.store.endpoint.MockEndpointsLoader;
-import org.creekservice.api.kafka.serde.schema.store.endpoint.SchemaStoreEndpoints;
 import org.creekservice.api.kafka.streams.extension.KafkaStreamsExtension;
 import org.creekservice.api.kafka.streams.extension.KafkaStreamsExtensionOptions;
 import org.creekservice.api.service.context.CreekContext;
@@ -53,19 +49,11 @@ class TopologyBuilderTest {
     @BeforeAll
     public static void classSetup() {
         // begin-snippet: classSetup
+        final var service = new HandleOccurrenceFilteringServiceDescriptor();
         ctx =
-                CreekServices.builder(new HandleOccurrenceFilteringServiceDescriptor())
+                CreekServices.builder(service)
                         .with(KafkaStreamsExtensionOptions.testBuilder().build())
-                        .with(
-                                JsonSerdeExtensionOptions.builder()
-                                        .withTypeOverride(
-                                                JsonSchemaStoreClient.Factory.class,
-                                                (schemaRegistryName, endpoints) ->
-                                                        new MockJsonSchemaStoreClient() {})
-                                        .withTypeOverride(
-                                                SchemaStoreEndpoints.Loader.class,
-                                                new MockEndpointsLoader() {})
-                                        .build())
+                        .with(JsonSerdeExtensionOptions.testBuilder(service).build())
                         .build();
         // end-snippet
     }
