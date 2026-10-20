@@ -16,6 +16,7 @@
 
 package io.github.creek.service.ks.connected.services.demo.handle.occurrence.filtering.service.kafka.streams;
 
+import static io.github.creek.service.ks.connected.services.demo.services.HandleOccurrenceFilteringServiceDescriptor.HandleUsageStream;
 import static org.creekservice.api.kafka.metadata.topic.KafkaTopicDescriptor.DEFAULT_CLUSTER_NAME;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -24,7 +25,7 @@ import io.github.creek.service.ks.connected.services.demo.services.HandleOccurre
 import java.nio.file.Path;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.TopologyTestDriver;
-import org.creekservice.api.kafka.serde.json.JsonSerdeExtensionOptions;
+import org.creekservice.api.kafka.serde.schema.test.UnownedSchemas;
 import org.creekservice.api.kafka.streams.extension.KafkaStreamsExtension;
 import org.creekservice.api.kafka.streams.extension.KafkaStreamsExtensionOptions;
 import org.creekservice.api.service.context.CreekContext;
@@ -49,10 +50,11 @@ class TopologyBuilderTest {
     @BeforeAll
     public static void classSetup() {
         // begin-snippet: classSetup
+        final UnownedSchemas schemas = UnownedSchemas.create().register(HandleUsageStream.value());
         ctx =
                 CreekServices.builder(new HandleOccurrenceFilteringServiceDescriptor())
                         .with(KafkaStreamsExtensionOptions.testBuilder().build())
-                        .with(JsonSerdeExtensionOptions.testBuilder().build())
+                        .with(schemas.jsonOptions())
                         .build();
         // end-snippet
     }
