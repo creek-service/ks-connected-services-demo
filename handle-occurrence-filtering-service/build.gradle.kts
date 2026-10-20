@@ -34,20 +34,10 @@ dependencies {
     runtimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion")
 
     testImplementation("org.apache.kafka:kafka-streams-test-utils:${property("kafkaVersion")}")
-    testImplementation("org.creekservice:creek-kafka-schema-serde-test:$creekVersion")
 }
 
 // Patch Kafka Streams test jar into main Kafka Streams module to avoid split packages:
 modularity.patchModule("kafka.streams", "kafka-streams-test-utils-${property("kafkaVersion")}.jar")
-modularity.patchModule("kafka.avro.serializer", "kafka-schema-serializer-8.3.2.jar")
-tasks.compileTestJava {
-    options.compilerArgs.addAll(listOf("--add-modules", "creek.kafka.schema.serde.test"))
-    options.compilerArgs.add("--add-reads=ks.connected.services.demo.handle.occurrence.filtering.service=creek.kafka.schema.serde.test")
-}
-tasks.test {
-    jvmArgs("--add-modules", "creek.kafka.schema.serde.test")
-    jvmArgs("--add-reads", "ks.connected.services.demo.handle.occurrence.filtering.service=creek.kafka.schema.serde.test")
-}
 
 application {
     mainModule.set("ks.connected.services.demo.handle.occurrence.filtering.service")
